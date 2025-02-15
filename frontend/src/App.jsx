@@ -1,11 +1,14 @@
-import './App.css'
-import KonvaTest from './components/testing-konva/konva.jsx';
+import RoomGrid from './components/RoomGrid/RoomGrid.jsx';
 
 function App() {
   return (
     <>
-    <p>Hello World!</p>
-      <KonvaTest />
+      <RoomGrid
+        footPx={30}
+        leftWallFeet={10}
+        topWallFeet={10}
+        rightWallFeet={15}
+      />
     </>
   )
 }

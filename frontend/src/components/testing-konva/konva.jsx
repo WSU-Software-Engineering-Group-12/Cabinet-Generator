@@ -6,8 +6,8 @@ import {
 import './konva.css'
 
 const KonvaTest = () => {
-    const rows = 10;
-    const cols = 10;
+    const rows = 13;
+    const cols = 13;
     const width = 500;
     const height = 500;
 

@@ -34,7 +34,7 @@ const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
         for(let col = 0; col < topWallFeet; col++) {
             gridRects.push(
                 <Rect 
-                    key={`row, col`}
+                    key={`${row}, ${col}`}
                     x={(col*footPx) + textOffsetPx}
                     y={(row*footPx) + textOffsetPx}
                     width={footPx}

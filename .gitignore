@@ -1,0 +1,47 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node.js dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python virtual environment
+backend/venv/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Django secrets & migrations
+backend/db.sqlite3
+backend/.env
+*.env
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Compiled & cache files
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/

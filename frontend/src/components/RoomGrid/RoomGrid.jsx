@@ -9,12 +9,11 @@ import PropTypes from 'prop-types'
 import './RoomGrid.css';
 
 /**
- * @summary A displays a bare 3-walled room with a grid on the inside displaying the size in feet
+ * @summary A component that displays a bare 3-walled room with a grid on the inside displaying the size in feet
  * @param {number} footPx the amount of pixels corresponding to 1 foot
  * @param {number} leftWallFeet the length of the left wall (in feet)
  * @param {number} topWallFeet the length of the top wall (in feet)
  * @param {number} rightWallFeet the length of the right wall (in feet)
- * @returns 
  */
 const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
     // Keep track of which side wall is larger (we will draw the grid down to the larger one)

@@ -5,7 +5,9 @@ import './App.css'
 import axios from 'axios'
 
 function App() {
+  const [cabinets, setCabinets] = useState([]);
   const [roomDetails, setRoomDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleRoomDetails = () => {
     const leftWallFeet = parseFloat(prompt("Enter the length of the left wall (in feet)"), 10);
@@ -31,7 +33,7 @@ function App() {
   }
 
   // TODO: extract logic to a separate component (to keep with SOLID)
-  const handlePlaceCabinet = async () => {
+  const placeCabinet = async () => {
     const cabinetData = {
       cabinet: {
         name: 'Base Cabinet',
@@ -43,9 +45,21 @@ function App() {
     };
 
     try {
-      
+      setIsLoading(true);
+      const response = await axios.post('http://127.0.0.1:8000/api/place_cabinet/', cabinetData);
+      const placedCabinet = response.data.placed_cabinet;
+      setCabinets([...cabinets, placedCabinet]); // Add placed cabinet to the canvas
+      setIsLoading(false);
+      console.log(`Placed cabined ${cabinetData.cabinet.name}`);
+    } catch (error) {
+      console.error("Error placing cabinet:", error);
     }
-  }
+  };
+
+  // useEffect to call the API when the component loads
+  useEffect(() => {
+    placeCabinet();
+  }, [])
 
   useEffect(() => {
     console.log("Updated roomDetails:", roomDetails);

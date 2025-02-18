@@ -30,4 +30,4 @@ def place_cabinet(request):
 
     placed_cabinet = place_cabinet_on_canvas(cabinet, float(x), float(y))
 
-    return Response({'placed cabinet': placed_cabinet})
+    return Response({'placed_cabinet': placed_cabinet})

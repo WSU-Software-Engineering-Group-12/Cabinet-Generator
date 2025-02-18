@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import RoomGrid from './components/RoomGrid/RoomGrid.jsx';
 import ExportToPDF from './components/ExportToPDF/ExportToPDF.jsx';
+import './App.css'
 
 function App() {
   const [roomDetails, setRoomDetails] = useState(null);
@@ -33,13 +34,21 @@ function App() {
   }, [roomDetails])
 
   return (
-    <div>
-      <ExportToPDF />
-      {!roomDetails ? (
-        <button onClick={handleRoomDetails}>Enter Room Details</button>
-      ) : (
-        <RoomGrid {...roomDetails}/>
-      )}
+    <div className='container'>
+      <div className='column'>
+        <h2>Legend</h2>
+      </div>
+      <div className='column'>
+        {!roomDetails ? (
+          <button onClick={handleRoomDetails}>Enter Room Details</button>
+        ) : (
+          <>
+            <h2>Room Layout</h2>
+            <RoomGrid {...roomDetails}/>
+          </>
+        )}
+        <ExportToPDF />
+      </div>
     </div>
   )
 }

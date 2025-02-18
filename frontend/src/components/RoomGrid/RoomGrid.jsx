@@ -40,7 +40,7 @@ const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
                     width={footPx}
                     height={footPx}
                     stroke='black'
-                    strokeWidth={.05}
+                    strokeWidth={.2}
                 />
             )
         }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import RoomGrid from './components/RoomGrid/RoomGrid.jsx';
 import ExportToPDF from './components/ExportToPDF/ExportToPDF.jsx';
 import './App.css'
+import axios from 'axios'
 
 function App() {
   const [roomDetails, setRoomDetails] = useState(null);
@@ -27,6 +28,23 @@ function App() {
       topWallFeet,
       rightWallFeet
     });
+  }
+
+  // TODO: extract logic to a separate component (to keep with SOLID)
+  const handlePlaceCabinet = async () => {
+    const cabinetData = {
+      cabinet: {
+        name: 'Base Cabinet',
+        width: 36,
+        height: 20
+      },
+      x: 100,
+      y: 150
+    };
+
+    try {
+      
+    }
   }
 
   useEffect(() => {

@@ -33,6 +33,6 @@
     "globals": "^15.14.0",
     "vite": "^6.0.5"
   },
-  "homepage": "https://github.com/WSU-Software-Engineering-Group-12.github.io/Cabinet-Generator"
+  "homepage": "https://github.com/WSU-Software-Engineering-Group-12.github.io/Cabinet-Generator/frontend/dist"
 
 }

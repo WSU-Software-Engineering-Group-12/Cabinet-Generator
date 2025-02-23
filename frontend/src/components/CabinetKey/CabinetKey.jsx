@@ -40,9 +40,9 @@ const CabinetKey = () => {
       };
 
       // useEffect to call the API when the component loads
-      useEffect(() => {
+      /*useEffect(() => {
         placeCabinet();
-      }, []);
+      }, []);*/
 
       return (
         <div className='cabinet-key'>

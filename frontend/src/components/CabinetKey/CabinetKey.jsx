@@ -7,7 +7,7 @@ import axios from 'axios';
  */
 const CabinetKey = () => {
     const [cabinets, setCabinets] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [setIsLoading] = useState(true);
 
     const placeCabinet = async () => {
         const cabinetData = {
@@ -40,9 +40,9 @@ const CabinetKey = () => {
       };
 
       // useEffect to call the API when the component loads
-      /*useEffect(() => {
+      useEffect(() => {
         placeCabinet();
-      }, []);*/
+      }, []);
 
       return (
         <div className='cabinet-key'>

@@ -1,16 +1,15 @@
-import RoomGrid from './components/RoomGrid/RoomGrid.jsx';
+import CabinetKey from './components/CabinetKey/CabinetKey.jsx';
+import RoomManager from './components/RoomManager/RoomManager.jsx';
+import './App.css';
+
 
 function App() {
   return (
-    <>
-      <RoomGrid
-        footPx={30}
-        leftWallFeet={10}
-        topWallFeet={10}
-        rightWallFeet={15}
-      />
-    </>
+    <div className='container'>
+      <CabinetKey className='column' />
+      <RoomManager className='column' />
+    </div>
   )
 }
 
-export default App
+export default App;

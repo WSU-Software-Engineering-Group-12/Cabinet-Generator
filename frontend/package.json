@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.7.9",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
+    "konva": "^9.3.18",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-konva": "^19.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

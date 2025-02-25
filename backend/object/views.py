@@ -40,11 +40,11 @@ def place_cabinet(request):
         return Response({'error:', str(e)}, status=500)
 
     response_data = {
-        'name': cabinet._name,
-        'width': cabinet._width,
-        'height': cabinet._height,
-        'position_x': cabinet._position_x,
-        'position_y': cabinet._position_y
+        'name': cabinet.__str__(),
+        'width': cabinet.get_dimensions()[0],
+        'height': cabinet.get_dimensions()[1],
+        'position_x': cabinet.get_position()[0],
+        'position_y': cabinet.get_position()[1]
     }
 
     return Response({'placed_cabinet': response_data})

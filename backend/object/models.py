@@ -38,6 +38,9 @@ class Object(models.Model):
         self._position_y = y
         return (self._position_x, self._position_y)
 
+    def __str__(self):
+        return self._name
+
     # Private fields, note: all dimension variables will be in inches
     _name = models.CharField(max_length=100)
     _width = models.FloatField(default=0.0)

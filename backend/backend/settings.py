@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Our apps
-    'cabinets'
+    'object'
 ]
 
 MIDDLEWARE = [

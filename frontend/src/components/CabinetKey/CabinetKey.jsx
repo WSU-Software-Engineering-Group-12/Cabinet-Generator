@@ -7,7 +7,7 @@ import axios from 'axios';
  */
 const CabinetKey = () => {
     const [cabinets, setCabinets] = useState([]);
-    const [setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const placeCabinet = async () => {
         const cabinetData = {

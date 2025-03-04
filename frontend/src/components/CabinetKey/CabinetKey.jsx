@@ -61,15 +61,6 @@ const CabinetKey = () => {
           {/* Ensure cabinets array has data before trying to render */}
           {cabinets.length > 0 &&
             cabinets.map((cabinet, index) => (
-              // <Rect
-              //   key={index}
-              //   x={cabinet.position_x} // Correct property for x
-              //   y={cabinet.position_y} // Correct property for y
-              //   width={cabinet.width * 10} // Scaling factor
-              //   height={cabinet.height * 10} // Scaling factor
-              //   stroke="red"
-              //   strokeWidth={3}
-              // />
               <Cabinet
                 key={index}
                 x={cabinet.position_x}

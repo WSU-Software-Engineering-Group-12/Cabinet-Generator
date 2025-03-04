@@ -1,6 +1,7 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { FOOT_PX } from "../../global_files/global_vars";
 
 /**
  * @summary A component that displays a key for the room design
@@ -43,7 +44,7 @@ const CabinetKey = () => {
   useEffect(() => {
     const placeCabinets = async () => {
       for(let i = 1; i <= 5; i++) {
-        await placeCabinet(5, 5, (i * 5) + 1, (i * 5) + 1);
+        await placeCabinet(5, 5, (i * 5 * FOOT_PX) + 1, 1);
       }
     }
 

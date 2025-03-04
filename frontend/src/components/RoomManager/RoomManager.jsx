@@ -21,7 +21,6 @@ const RoomManager = () => {
         }
     
         setRoomDetails({
-          footPx: 10,
           leftWallFeet,
           topWallFeet,
           rightWallFeet

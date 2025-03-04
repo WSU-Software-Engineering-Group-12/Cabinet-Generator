@@ -1,5 +1,6 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useState, useEffect } from "react";
+import Cabinet from "../Cabinet/Cabinet";
 import axios from "axios";
 import { FOOT_PX } from "../../global_files/global_vars";
 
@@ -60,14 +61,21 @@ const CabinetKey = () => {
           {/* Ensure cabinets array has data before trying to render */}
           {cabinets.length > 0 &&
             cabinets.map((cabinet, index) => (
-              <Rect
+              // <Rect
+              //   key={index}
+              //   x={cabinet.position_x} // Correct property for x
+              //   y={cabinet.position_y} // Correct property for y
+              //   width={cabinet.width * 10} // Scaling factor
+              //   height={cabinet.height * 10} // Scaling factor
+              //   stroke="red"
+              //   strokeWidth={3}
+              // />
+              <Cabinet
                 key={index}
-                x={cabinet.position_x} // Correct property for x
-                y={cabinet.position_y} // Correct property for y
-                width={cabinet.width * 10} // Scaling factor
-                height={cabinet.height * 10} // Scaling factor
-                stroke="red"
-                strokeWidth={3}
+                x={cabinet.position_x}
+                y={cabinet.position_y}
+                width={cabinet.width}
+                height={cabinet.height}
               />
           ))}
         </Layer>

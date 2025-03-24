@@ -26,11 +26,11 @@ class Object(models.Model):
     # Public fields
     def get_dimensions(self):
         """Returns the object's dimensions in inches (width, height)"""
-        return (self._width, self._height)
+        return {'width': self._width, 'height': self._height}
 
     def get_position(self):
         """Returns the object's (x, y) position in inches"""
-        return (self._position_x, self._position_y)
+        return {'x': self._position_x, 'y': self._position_y}
     
     def move_to(self, x, y):
         """Moves the object to a new (x, y) position"""

@@ -3,7 +3,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.cabinet import Cabinet
 
-# Create your views here.
 @api_view(['POST'])
 def place_cabinet(request):
     """
@@ -41,10 +40,10 @@ def place_cabinet(request):
 
     response_data = {
         'name': cabinet.__str__(),
-        'width': cabinet.get_dimensions()[0],
-        'height': cabinet.get_dimensions()[1],
-        'position_x': cabinet.get_position()[0],
-        'position_y': cabinet.get_position()[1]
+        'width': cabinet.get_dimensions()['width'],
+        'height': cabinet.get_dimensions()['height'],
+        'position_x': cabinet.get_position()['x'],
+        'position_y': cabinet.get_position()['y']
     }
 
     return Response({'placed_cabinet': response_data})

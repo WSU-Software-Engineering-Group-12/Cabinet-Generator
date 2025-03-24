@@ -1,4 +1,3 @@
-from django.db import models
 from .base_object import Object
 
 class Cabinet(Object):
@@ -11,6 +10,8 @@ class Cabinet(Object):
 
         cabinet = Cabinet
     """
+
+    _VALID_SIZES = [36, 33, 30, 27, 24, 21, 18, 15, 12, 9]  # Standard cabinet sizes
     
     def __init__(self, *args, place_x=None, place_y=None, **kwargs):
         """Creates a Cabinet with initial coordinates."""
@@ -25,3 +26,37 @@ class Cabinet(Object):
     def place_on_canvas(self, x, y):
         """Moves a cabinet to a new position"""
         self.move_to(x, y)
+
+class Base(Cabinet):
+    DEPTH = 24  # inches
+    HEIGHT = 36  # inches
+
+    def __init__(self, width):
+        super().__init__(width, Base.HEIGHT, Base.DEPTH, name="B")
+
+class BaseCorner(Base):
+    def __init__(self, width):
+        if width not in [33, 36]:  # Width must be 33 or 36 inches
+            raise ValueError("Width must be either 33 or 36 inches.")
+        super().__init__(width)
+        self.name = f"BC{width}"
+
+
+class Upper(Cabinet):
+    DEPTH = 12  # inches
+
+    def __init__(self, width, height):
+        super().__init__(width, height, Upper.DEPTH, name="U")
+
+
+class UpperCorner(Upper):
+    WIDTH = 24  # Updated to 24 inches
+
+    def __init__(self, height):
+        super().__init__(UpperCorner.WIDTH, height)
+        self.name = "UC24"
+
+
+class Filler(Cabinet):
+    def __init__(self, width):
+        super().__init__(width, None, None, name="F")

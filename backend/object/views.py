@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Cabinet
+from .models.cabinet import Cabinet
 
 # Create your views here.
 @api_view(['POST'])

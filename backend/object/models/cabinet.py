@@ -19,7 +19,7 @@ class Cabinet(Object):
         
         # Assign ORM fields if provided
         if name is not None and width is not None and height is not None and depth is not None:
-            kwargs['name'] = f"{name}{width}"
+            kwargs["name"] = f"{name}{width}"
             kwargs["width"] = width
             kwargs["height"] = height
             kwargs["depth"] = depth

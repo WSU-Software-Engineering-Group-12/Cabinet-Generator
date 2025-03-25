@@ -23,11 +23,12 @@ def place_cabinet(request):
     try:
         print('about to place cabinet')
         cabinet = Cabinet(
-            _name=cabinet_data['name'],
-            _width=cabinet_data['width'],
-            _height=cabinet_data['height'],
-            _position_x=float(x),
-            _position_y=float(y)
+            name=cabinet_data['name'],
+            width=cabinet_data['width'],
+            height=cabinet_data['height'],
+            depth=cabinet_data['depth'],
+            position_x=float(x),
+            position_y=float(y)
         )
         print('placed cabinet')
         cabinet.save()
@@ -42,6 +43,7 @@ def place_cabinet(request):
         'name': cabinet.__str__(),
         'width': cabinet.get_dimensions()['width'],
         'height': cabinet.get_dimensions()['height'],
+        'depth': cabinet.get_dimensions()['depth'],
         'position_x': cabinet.get_position()['x'],
         'position_y': cabinet.get_position()['y']
     }

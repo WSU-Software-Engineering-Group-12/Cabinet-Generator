@@ -25,25 +25,25 @@ class Object(models.Model):
     
     # Public fields
     def get_dimensions(self):
-        """Returns the object's dimensions in inches (width, height)"""
-        return {'width': self._width, 'height': self._height}
+        """Returns the object's dimensions in inches (width, height, depth)"""
+        return {'width': self.width, 'height': self.height, 'depth': self.depth}
 
     def get_position(self):
         """Returns the object's (x, y) position in inches"""
-        return {'x': self._position_x, 'y': self._position_y}
+        return {'x': self.position_x, 'y': self.position_y}
     
     def move_to(self, x, y):
         """Moves the object to a new (x, y) position"""
-        self._position_x = x
-        self._position_y = y
-        return (self._position_x, self._position_y)
+        self.position_x = x
+        self.position_y = y
+        return (self.position_x, self.position_y)
 
     def __str__(self):
-        return self._name
-
-    # Private fields, note: all dimension variables will be in inches
-    _name = models.CharField(max_length=100)
-    _width = models.FloatField(default=0.0)
-    _height = models.FloatField(default=0.0)
-    _position_x = models.FloatField(default=0.0)
-    _position_y = models.FloatField(default=0.0)
+        return self.name
+    
+    name = models.CharField(max_length=100)
+    width = models.FloatField(default=0.0)
+    height = models.FloatField(default=0.0)
+    depth = models.FloatField(default=0.0)
+    position_x = models.FloatField(default=0.0)
+    position_y = models.FloatField(default=0.0)

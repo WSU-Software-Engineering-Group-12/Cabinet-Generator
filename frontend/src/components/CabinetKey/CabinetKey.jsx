@@ -13,8 +13,9 @@ const CabinetKey = () => {
         const cabinetData = {
           cabinet: {
             name: 'Base Cabinet',
-            width: 5,
-            height: 5
+            width: 36,
+            height: 36,
+            depth: 36
           },
           x: 10,
           y: 1

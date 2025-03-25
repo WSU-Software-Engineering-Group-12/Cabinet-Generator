@@ -1,6 +1,5 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { generateWall, placeCabinet } from "../../../utils/api";
 
 /**

@@ -13,6 +13,11 @@ class Cabinet(Object):
 
     VALID_SIZES = [36, 33, 30, 27, 24, 21, 18, 15, 12, 9]  # Standard cabinet sizes
     
+    # Default values (make generation easier)
+    STANDARD_HEIGHT = 36
+    STANDARD_BASE_DEPTH = 24.5
+    STANDARD_UPPER_DEPTH = 12
+
     def __init__(self, *args, name=None, width=None, height=None, depth=None, place_x=None, place_y=None, **kwargs):
         """Creates a Cabinet with initial coordinates."""
         self._validate_width(width) # Validate width against predefined sizes

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RoomGrid from '../RoomGrid/RoomGrid.jsx';
 import ExportToPDF from '../ExportToPDF/ExportToPDF.jsx';
+import Wall from "../Wall/Wall.jsx";
 
 const RoomManager = () => {
     const [roomDetails, setRoomDetails] = useState(null);
@@ -29,6 +30,7 @@ const RoomManager = () => {
     }
     return (
         <div>
+            <Wall lengthFeet={120} generation="b1" footPx={10} />
             {!roomDetails ? (
                 <button onClick={handleRoomDetails}>Enter Room Details</button>
             ) : (

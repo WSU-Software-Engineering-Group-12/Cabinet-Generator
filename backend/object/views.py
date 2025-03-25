@@ -62,6 +62,8 @@ def generate_wall(request):
     }
     """
     data = request.data
+    print("generate_wall request data:", data)
+
     width = data.get("width")
     generation = data.get("generation", "b1") # Default to gen b1
 
@@ -83,6 +85,25 @@ def generate_wall(request):
             return Response({"error": "Invalid generation type."}, status=400)
         # TODO implement uppers
 
-        return Response({"layout": layout})
+        # Extract width, height, and depth
+        cabinet_details = []
+        for cabinet in wall.bases:
+            if cabinet[0] in ["B", "F"]: # Extract width
+                try:
+                    cab_width = int(cabinet[1:])
+                    cab_height = Cabinet.STANDARD_HEIGHT
+                    
+                    # TODO change based on upper/lower status
+                    cab_depth = Cabinet.STANDARD_BASE_DEPTH
+
+                    cabinet_details.append({
+                        "width": cab_width,
+                        "height": cab_height,
+                        "depth": cab_depth
+                    })
+                except ValueError:
+                    print(f"Skipping invalid cabinet entry: {cabinet}")
+
+        return Response({"cabinets": cabinet_details})
     except Exception as e:
         return Response({"error": str(e)}, status=500)

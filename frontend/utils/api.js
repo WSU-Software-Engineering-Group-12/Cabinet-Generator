@@ -24,3 +24,24 @@ export const generateWall = async (width, generation) => {
         throw error;
     }
 }
+
+// API function for placing a cabinet at a specified location
+export const placeCabinet = async (name, width, height, depth, x, y) => {
+    try {
+        const response = await api.post("/place_cabinet/", {
+            cabinet: {
+                name,
+                width,
+                height,
+                depth
+            },
+            x,
+            y
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("API error (placeCabinet):", error);
+        throw error;
+    }
+}

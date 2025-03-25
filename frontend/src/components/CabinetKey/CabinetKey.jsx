@@ -1,7 +1,7 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { generateWall } from "../../../utils/api";
+import { generateWall, placeCabinet } from "../../../utils/api";
 
 /**
  * @summary A component that displays a key for the room design
@@ -12,46 +12,17 @@ const CabinetKey = () => {
   const [cabinets, setCabinets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // const placeCabinet = async () => {
-  //     const cabinetData = {
-  //       cabinet: {
-  //         name: 'Base Cabinet',
-  //         width: 36,
-  //         height: 36,
-  //         depth: 36
-  //       },
-  //       x: 10,
-  //       y: 1
-  //     };
-
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.post('http://127.0.0.1:8000/api/place_cabinet/', cabinetData);
-  //       const placedCabinet = response.data.placed_cabinet;
-
-  //       // Use the functional form of setCabinets to get the latest state and append the new cabinet
-  //       setCabinets((prevCabinets) => {
-  //         const updatedCabinets = [...prevCabinets, placedCabinet];
-
-  //         return updatedCabinets; // Return the new updated state
-  //       });
-
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.error("Error placing cabinet:", error);
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  const handleGenerate = async () => {
+  const handlePlace = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Call a test wall
-      // TODO handle this in the proper component
-      const data = await generateWall(120, "b1");
-      setWallData(data.layout); // Update state with API response
-      console.log(wallData);
+      // Call a test cabinet
+      // TODO make an actual legend on the sidebar
+      const data = await placeCabinet('test', 15, 15, 15, 1, 1);
+
+      console.log("API Response:", data)
+
+      setCabinets((prevCabinets) => [...prevCabinets, data.placed_cabinet]);
     } catch (error) {
       setError("Failed to generate wall layout: " + error);
     }
@@ -61,9 +32,8 @@ const CabinetKey = () => {
 
   // useEffect to call the API when the component loads
   useEffect(() => {
-    handleGenerate();
-    console.log("Updated wallData:", wallData);
-  }, [wallData]);
+    handlePlace();
+  }, []);
 
   return (
     <div className="cabinet-key">

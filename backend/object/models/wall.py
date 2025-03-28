@@ -75,8 +75,6 @@ class Wall(Object):
                 remaining_width = 0
         
         return cabinets
-    
-    
 
     def generation_b1(self):
         remaining_width = self.width - 36  # Leave space for Base Corner

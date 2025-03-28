@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.cabinet import Cabinet
 from .models.wall import Wall
+import traceback
 
 @api_view(['POST'])
 def place_cabinet(request):
@@ -54,56 +55,72 @@ def place_cabinet(request):
 @api_view(['POST'])
 def generate_wall(request):
     """
-    Endpoint to test cabinet layout generation.
-    Expected JSON payload:
+    Endpoint to generate a cabinet layout for a given wall width and generation type.
+
+    ### Expected JSON payload:
     {
-        "width": <number>,
-        "generation": "b1" | "b2" | "b3" | "u1" | "u2" | "u3"
+        "width": number,           # The width of the wall in inches
+        "generation": string       # One of "b1", "b2", "b3", "u1", "u2", or "u3"
+    }
+
+    ### Response JSON format:
+    {
+        "cabinets": {
+            "bases": [...],  # List of base cabinets
+            "uppers": [...]  # List of upper cabinets
+        }
     }
     """
     data = request.data
-    print("generate_wall request data:", data)
+    print("RECIEVED generate_wall request data:", data)
 
     width = data.get("width")
-    generation = data.get("generation", "b1") # Default to gen b1
+    #generation = data.get("generation", "u3") # TODO get this from frontend
 
     if width is None:
         return Response({"error": "Width is required"}, status=400)
     
     try:
         wall = Wall(width=width)
-        if generation == "b1":
-            wall.generation_b1()
-            layout = {"bases": wall.bases}
-        elif generation == "b2":
-            wall.generation_b2()
-            layout = {"bases": wall.bases}
-        elif generation == "b3":
-            wall.generation_b3()
-            layout = {"bases": wall.bases}
-        else:
-            return Response({"error": "Invalid generation type."}, status=400)
-        # TODO implement uppers
 
-        # Extract width, height, and depth
-        cabinet_details = []
-        for cabinet in wall.bases:
-            if cabinet[0] in ["B", "F"]: # Extract width
-                try:
-                    cab_width = int(cabinet[1:])
-                    cab_height = Cabinet.STANDARD_HEIGHT
-                    
-                    # TODO change based on upper/lower status
-                    cab_depth = Cabinet.STANDARD_BASE_DEPTH
+        # TODO handle this dynamically
+        wall.generation_b1()
+        wall.generation_u1()
 
-                    cabinet_details.append({
-                        "width": cab_width,
-                        "height": cab_height,
-                        "depth": cab_depth
-                    })
-                except ValueError:
-                    print(f"Skipping invalid cabinet entry: {cabinet}")
+        response_data = {
+            "cabinets": {
+                "bases": extract_cabinet_details(wall.bases, is_base=True),
+                "uppers": extract_cabinet_details(wall.uppers, is_base=False)
+            }
+        }
 
-        return Response({"cabinets": cabinet_details})
+        print(f"Generated cabinets: {response_data}")
+        return Response(response_data)
+    
     except Exception as e:
+        print("Error in generate_wall:", str(e))
+        print(traceback.format_exc())
         return Response({"error": str(e)}, status=500)
+
+# Helper function for generate_wall
+def extract_cabinet_details(cabinets, is_base=True):
+    cabinet_details = []
+    for cabinet in cabinets:
+        if cabinet[0] in ["B", "F", "U", "C"]:  # Consider all cabinet types
+            try:
+                # TODO Handle corners
+                cab_width = int(cabinet[1:]) if cabinet[1:].isdigit() else 0
+                cab_height = Cabinet.STANDARD_HEIGHT
+                cab_depth = (
+                    Cabinet.STANDARD_BASE_DEPTH if is_base else Cabinet.STANDARD_UPPER_DEPTH
+                )
+
+                cabinet_details.append({
+                    "name": cabinet,
+                    "width": cab_width,
+                    "height": cab_height,
+                    "depth": cab_depth
+                })
+            except ValueError:
+                print(f"Skipping invalid cabinet entry: {cabinet}")
+    return cabinet_details

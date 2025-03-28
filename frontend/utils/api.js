@@ -12,11 +12,10 @@ const api = axios.create({
 // ***** All API methods go below here ***** \\
 
 // API function for generating cabinet layout
-export const generateWall = async (width, generation) => {
+export const generateWall = async (width) => {
     try {
         const response = await api.post("/generate_wall/", {
-            width,
-            generation
+            width
         });
         return response.data;
     } catch (error) {

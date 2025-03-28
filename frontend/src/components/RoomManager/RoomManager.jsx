@@ -30,7 +30,7 @@ const RoomManager = () => {
     }
     return (
         <div>
-            <Wall lengthFeet={120} generation="b1" footPx={10} />
+            <Wall lengthFeet={120} orientation="left" footPx={10} />
             {!roomDetails ? (
                 <button onClick={handleRoomDetails}>Enter Room Details</button>
             ) : (

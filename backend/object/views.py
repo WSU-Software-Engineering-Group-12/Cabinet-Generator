@@ -108,7 +108,31 @@ def extract_cabinet_details(cabinets, is_base=True):
     for cabinet in cabinets:
         if cabinet[0] in ["B", "F", "U", "C"]:  # Consider all cabinet types
             try:
-                # TODO Handle corners
+                # Manually input dimensions for corners
+                if cabinet == "BC36": # Base corner
+                    cab_width = 36
+                    cab_height = 36
+                    cab_depth = 36
+                    cabinet_details.append({
+                        "name": cabinet,
+                        "width": cab_width,
+                        "height": cab_height,
+                        "depth": cab_depth
+                    })
+                    continue
+                if cabinet == "UC24": # Upper corner
+                    cab_width = 24
+                    cab_height = 24
+                    cab_depth = 24
+                    cabinet_details.append({
+                        "name": cabinet,
+                        "width": cab_width,
+                        "height": cab_height,
+                        "depth": cab_depth
+                    })
+                    continue
+
+                # Handle regular cabinets
                 cab_width = int(cabinet[1:]) if cabinet[1:].isdigit() else 0
                 cab_height = Cabinet.STANDARD_HEIGHT
                 cab_depth = (

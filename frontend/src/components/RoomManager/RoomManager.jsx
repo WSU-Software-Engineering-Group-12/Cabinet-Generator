@@ -2,6 +2,7 @@ import { useState } from "react";
 import RoomGrid from '../RoomGrid/RoomGrid.jsx';
 import ExportToPDF from '../ExportToPDF/ExportToPDF.jsx';
 import Wall from "../Wall/Wall.jsx";
+import { Stage } from "react-konva";
 
 const RoomManager = () => {
     const [roomDetails, setRoomDetails] = useState(null);
@@ -30,7 +31,11 @@ const RoomManager = () => {
     }
     return (
         <div>
-            <Wall lengthFeet={120} orientation="left" footPx={10} />
+            <Stage width={5000} height={5000}>
+                <Wall lengthFeet={50} orientation="left" />
+                <Wall lengthFeet={100} orientation="top" />
+                <Wall lengthFeet={200} orientation="right" offset={100} />
+            </Stage>
             {!roomDetails ? (
                 <button onClick={handleRoomDetails}>Enter Room Details</button>
             ) : (

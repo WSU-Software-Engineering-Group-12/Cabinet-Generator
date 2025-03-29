@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.cabinet import Cabinet
@@ -60,7 +59,7 @@ def generate_wall(request):
     ### Expected JSON payload:
     {
         "width": number,           # The width of the wall in inches
-        "generation": string       # One of "b1", "b2", "b3", "u1", "u2", or "u3"
+        "orientation": string       # One of "left", "top", or "right"
     }
 
     ### Response JSON format:
@@ -72,10 +71,10 @@ def generate_wall(request):
     }
     """
     data = request.data
-    print("RECIEVED generate_wall request data:", data)
+    print("RECEIVED generate_wall request data:", data)
 
     width = data.get("width")
-    #generation = data.get("generation", "u3") # TODO get this from frontend
+    orientation = data.get("orientation") # Has to be left, right, or top
 
     if width is None:
         return Response({"error": "Width is required"}, status=400)
@@ -84,8 +83,18 @@ def generate_wall(request):
         wall = Wall(width=width)
 
         # TODO handle this dynamically
-        wall.generation_b1()
-        wall.generation_u1()
+        
+        if orientation == "left":
+            wall.generation_b1()
+            wall.generation_u1()
+        elif orientation == "top":
+            wall.generation_b2()
+            wall.generation_u2()
+        elif orientation == "right":
+            wall.generation_b1()
+            wall.generation_u1()
+        else:
+            raise ValueError(f"{orientation} is not a valid entry for orientation type")
 
         response_data = {
             "cabinets": {

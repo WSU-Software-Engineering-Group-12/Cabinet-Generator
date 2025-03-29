@@ -1,18 +1,43 @@
 import { useEffect, useState } from "react";
-import { Rect, Stage, Layer } from "react-konva";
+import { Rect, Layer } from "react-konva";
 import { generateWall } from "../../../utils/api";
+import PropTypes from "prop-types";
+import { defaultFootPx } from "../../../utils/globalVars";
 
-const Wall = ({lengthFeet, orientation, footPx}) => {
-    // TODO add orientation logic
-    const validOrientations = ["left", "right", "top"];
+/**
+ * Wall component for rendering a wall with cabinets in a floor plan.
+ *
+ * This component represents a wall in a cabinet layout. It supports three orientations:
+ * "top" (horizontal at the top), "left" (vertical on the left), and "right" (vertical on the right).
+ * Cabinets are drawn along the wall based on data fetched from an API.
+ *
+ * Props:
+ * @param {number} lengthFeet - The length of the wall in feet.
+ * @param {("left" | "right" | "top")} orientation - The orientation of the wall.
+ * @param {number} [footPx=defaultFootPx] - The number of pixels per foot for scaling.
+ * @param {number} [offset] - Used only for right walls; represents the length of the top wall
+ *                            to properly offset the right wall's position.
+ *
+ * Behavior:
+ * - Fetches wall and cabinet data from an API on mount and when `lengthFeet` or `orientation` changes.
+ * - Draws a wall as a black rectangle and places cabinets along it as gray outlined rectangles.
+ * - For "top" orientation, bases are placed underneath the wall.
+ * - For "left" and "right" orientations, uppers are placed vertically.
+ * - The `offset` prop is used for right walls to ensure proper positioning relative to the top wall.
+ *
+ * Returns:
+ * @returns {JSX.Element} A Konva Layer containing the wall and cabinet Rects.
+ */
+const Wall = ({lengthFeet, orientation, footPx = defaultFootPx, offset}) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
     const [uppers, setUppers] = useState([]);
+    console.log("Props Check - lengthFeet:", lengthFeet, "orientation:", orientation, "footPx:", footPx);
 
     useEffect(() => {
         const fetchWall = async () => {
             try {
-                const response = await generateWall(lengthFeet);
+                const response = await generateWall(lengthFeet, orientation);
                 console.log("API Response:", response);
                 // Ensure the API response contains an array of cabinets.
                 if (response?.cabinets) {
@@ -30,7 +55,7 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
         };
 
         fetchWall();
-    }, [lengthFeet]);
+    }, [lengthFeet, orientation]);
 
     // Base case checking
     if(error) return <p>{error}</p>
@@ -45,15 +70,15 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
     if (orientation === "top") {
         // -- Top Wall: horizontal wall at the top, cabinets drawn underneath --
         // We'll use the bases array here.
-        let cumulativeX = 0;
+        let cumulativeX = 36 * footPx; // Initialize cumulativeX to be beyond the corner cabinet (no corners drawn on top wall)
         cabinetRects = bases.map((cabinet, index) => {
-            const rectWidth = cabinet.width * footPx; // horizontal dimension
-            const rectHeight = cabinet.depth * footPx; // vertical dimension
+            const rectWidth = cabinet.width * footPx || 0; // horizontal dimension
+            const rectHeight = cabinet.depth * footPx || 0; // vertical dimension
             const rect = (
                 <Rect
                     key={`top-${index}`}
                     x={cumulativeX}
-                    y={10} // Positioned below the wall line
+                    y={0}
                     width={rectWidth}
                     height={rectHeight}
                     fill={null}
@@ -80,14 +105,14 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
         let cumulativeY = wallLengthPx; // start from the bottom of the wall
         cabinetRects = uppers.map((cabinet, index) => {
             // When drawn vertically, we assume the cabinet's width becomes its vertical extent.
-            const rectHeight = cabinet.width * footPx;
-            const rectWidth = cabinet.depth * footPx;
+            const rectHeight = cabinet.width * footPx || 0;
+            const rectWidth = cabinet.depth * footPx || 0;
             const yPos = cumulativeY - rectHeight;
             cumulativeY -= rectHeight;
             return (
                 <Rect
                     key={`left-${index}`}
-                    x={5}  // Drawn to the right of the wall (wall is at x=0 to x=5)
+                    x={0}  // Drawn to the right of the wall
                     y={yPos}
                     width={rectWidth}
                     height={rectHeight}
@@ -119,7 +144,7 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
             return (
                 <Rect
                     key={`right-${index}`}
-                    x={wallLengthPx - rectWidth - 5}  // Drawn to the left of the wall (wall is at right edge)
+                    x={(offset * footPx) - rectWidth}  // Drawn to the left of the wall (wall is at right edge)
                     y={yPos}
                     width={rectWidth}
                     height={rectHeight}
@@ -132,7 +157,7 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
         // Draw the vertical wall along the right edge
         wallRect = (
             <Rect
-                x={wallLengthPx - 5}
+                x={offset * footPx}
                 y={0}
                 width={5}
                 height={wallLengthPx}
@@ -143,14 +168,27 @@ const Wall = ({lengthFeet, orientation, footPx}) => {
 
 
     return (
-        <Stage width={5000} height={5000}>
-            <Layer>
-                {/* Draw the cabinets */}
-                {wallRect}
-                {cabinetRects}
-            </Layer>
-        </Stage>
+        <Layer>
+            {/* Draw the cabinets */}
+            {wallRect}
+            {cabinetRects}
+        </Layer>
     )
+}
+
+Wall.propTypes = {
+    lengthFeet: PropTypes.number.isRequired,
+    orientation: PropTypes.oneOf(["left", "right", "top"]).isRequired,
+    footPx: PropTypes.number,
+    offset: (props, propName, componentName) => {
+        if (props.orientation === "right" && (props[propName] === undefined || props[propName] === null)) {
+          return new Error(
+            `Invalid prop \`${propName}\` supplied to \`${componentName}\`. ` +
+            `The \`offset\` prop is required when \`orientation\` is "right".`
+          );
+        }
+        return null; // No error if validation passes
+      }
 }
 
 export default Wall;

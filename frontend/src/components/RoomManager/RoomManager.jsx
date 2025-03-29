@@ -33,7 +33,12 @@ const RoomManager = () => {
     return (
         <div>
             {!roomDetails ? (
-                <button onClick={handleRoomDetails}>Enter Room Details</button>
+                <>
+                    <h1>Welcome to CabineXt</h1>
+                    <p>Generate a cabinet layout tailored specifically to your own room!</p>
+                    <button onClick={handleRoomDetails}>Enter Your Room&apos;s Details</button>
+                </>
+                
             ) : (
                 <>
                     <h2>Room Layout</h2>
@@ -62,9 +67,9 @@ const RoomManager = () => {
                         </Layer>
                         
                     </Stage>
+                    <ExportToPDF />
                 </>
             )}
-            <ExportToPDF />
         </div>
     );
 }

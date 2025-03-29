@@ -30,14 +30,13 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
         };
 
         fetchWall();
-    }, [lengthFeet, orientation]);
 
-    const bringToFront = () => {
+        // Ensure the walls render on top of everything else
         if (topGroup.current) {
             topGroup.current.moveToTop();
             topGroup.current.batchDraw(); // Force re-render
         }
-    };
+    }, [lengthFeet, orientation]);
 
     if (error) return <p>{error}</p>;
     if (bases.length === 0 && uppers.length === 0) return null;

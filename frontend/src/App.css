@@ -4,6 +4,11 @@
   overflow: hidden;
 }*/
 
+html {
+  background-color: rgb(20, 40, 69);
+  color: white;
+}
+
 .container {
   display: flex;
   flex-direction: row;

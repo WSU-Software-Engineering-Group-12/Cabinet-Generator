@@ -2,7 +2,8 @@ import { useState } from "react";
 import RoomGrid from '../RoomGrid/RoomGrid.jsx';
 import ExportToPDF from '../ExportToPDF/ExportToPDF.jsx';
 import Wall from "../Wall/Wall.jsx";
-import { Stage } from "react-konva";
+import { Group, Layer, Stage } from "react-konva";
+import { defaultGridOffset } from "../../../utils/globalVars.js";
 
 const RoomManager = () => {
     const [roomDetails, setRoomDetails] = useState(null);
@@ -37,11 +38,30 @@ const RoomManager = () => {
                 <>
                     <h2>Room Layout</h2>
                     <Stage width={5000} height={5000}>
-                        <Wall lengthFeet={roomDetails.leftWallFeet} orientation="left" />
-                        <Wall lengthFeet={roomDetails.topWallFeet} orientation="top" />
-                        <Wall lengthFeet={roomDetails.rightWallFeet} orientation="right" offset={roomDetails.topWallFeet} />
+                        <Layer>
+                            <Group x={defaultGridOffset} y={defaultGridOffset}>
+                                <RoomGrid 
+                                    leftWallFeet={roomDetails.leftWallFeet}
+                                    topWallFeet={roomDetails.topWallFeet}
+                                    rightWallFeet={roomDetails.rightWallFeet}
+                                />
+                                <Wall 
+                                    lengthFeet={roomDetails.leftWallFeet} 
+                                    orientation="left" 
+                                />
+                                <Wall 
+                                    lengthFeet={roomDetails.topWallFeet} 
+                                    orientation="top" 
+                                />
+                                <Wall 
+                                    lengthFeet={roomDetails.rightWallFeet}
+                                    orientation="right" 
+                                    offset={roomDetails.topWallFeet} 
+                                />
+                            </Group>
+                        </Layer>
+                        
                     </Stage>
-                    <RoomGrid />
                 </>
             )}
             <ExportToPDF />

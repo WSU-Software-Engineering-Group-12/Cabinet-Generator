@@ -1,10 +1,10 @@
 import {  
-    Layer, 
     Rect,
     Text
 } from 'react-konva';
 import PropTypes from 'prop-types'
 import './RoomGrid.css';
+import { defaultFootPx, defaultGridOffset } from '../../../utils/globalVars';
 
 /**
  * @summary A component that displays a bare 3-walled room with a grid on the inside displaying the size in feet
@@ -13,12 +13,12 @@ import './RoomGrid.css';
  * @param {number} topWallFeet the length of the top wall (in feet)
  * @param {number} rightWallFeet the length of the right wall (in feet)
  */
-const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
+const RoomGrid = ({footPx = defaultFootPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
     // Keep track of which side wall is larger (we will draw the grid down to the larger one)
     const maxSideWallFeet = leftWallFeet >= rightWallFeet ? leftWallFeet : rightWallFeet;
     
     // Size the canvas relative to the walls (leaving space for text on either side)
-    const textOffsetPx = 50; // Pixel buffer between the grid and canvas (leaves space for text)
+    const textOffsetPx = defaultGridOffset; // Pixel buffer between the grid and canvas (leaves space for text)
     const width = (topWallFeet * footPx) + (textOffsetPx * 2);
     const height = (maxSideWallFeet * footPx) + textOffsetPx;
 
@@ -45,47 +45,43 @@ const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
 
     return (
         <>
-            <Layer>
-                {/* Left Text */}
-                <Text
-                    text={`${leftWallFeet} ft`}
-                    fontSize={fontSize}
-                    align='left'
-                    verticalAlign='center'
-                    height={height}
-                    x={0}
-                    y={((leftWallFeet * footPx) / 2) + (fontSize / 2)}
-                />
+            {/* Left Text */}
+            <Text
+                text={`${leftWallFeet} ft`}
+                fontSize={fontSize}
+                align='left'
+                verticalAlign='center'
+                height={height}
+                x={0}
+                y={((leftWallFeet * footPx) / 2) + (fontSize / 2)}
+            />
 
-                {/* Top Text */}
-                <Text
-                    text={`${topWallFeet} ft`}
-                    fontSize={fontSize}
-                    align='center'
-                    width={width}
-                    x={0}
-                />
+            {/* Top Text */}
+            <Text
+                text={`${topWallFeet} ft`}
+                fontSize={fontSize}
+                align='center'
+                width={width}
+                x={0}
+            />
 
-                {/* Right Text */}
-                <Text
-                    text={`${rightWallFeet} ft`}
-                    fontSize={fontSize}
-                    align='right'
-                    width={width}
-                    x={0}
-                    y={((rightWallFeet * footPx) / 2) + (fontSize / 2)}
-                />
-            </Layer>
-            <Layer>
-                {/* Grid */}
-                {gridRects}
-            </Layer>
+            {/* Right Text */}
+            <Text
+                text={`${rightWallFeet} ft`}
+                fontSize={fontSize}
+                align='right'
+                width={width}
+                x={0}
+                y={((rightWallFeet * footPx) / 2) + (fontSize / 2)}
+            />
+            {/* Grid */}
+            {gridRects}
         </>
     );
 }
 
 RoomGrid.propTypes = {
-    footPx: PropTypes.number.isRequired,
+    footPx: PropTypes.number,
     leftWallFeet: PropTypes.number.isRequired,
     topWallFeet: PropTypes.number.isRequired,
     rightWallFeet: PropTypes.number.isRequired

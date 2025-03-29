@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Rect, Layer } from "react-konva";
+import { Rect } from "react-konva";
 import { generateWall } from "../../../utils/api";
 import PropTypes from "prop-types";
 import { defaultFootPx } from "../../../utils/globalVars";
@@ -167,11 +167,11 @@ const Wall = ({lengthFeet, orientation, footPx = defaultFootPx, offset}) => {
 
 
     return (
-        <Layer>
+        <>
             {/* Draw the cabinets */}
             {wallRect}
             {cabinetRects}
-        </Layer>
+        </>
     )
 }
 

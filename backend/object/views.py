@@ -82,8 +82,6 @@ def generate_wall(request):
     try:
         wall = Wall(width=width)
 
-        # TODO handle this dynamically
-        
         if orientation == "left":
             wall.generation_b1()
             wall.generation_u1()

@@ -1,6 +1,6 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useState, useEffect } from "react";
-import { generateWall, placeCabinet } from "../../../utils/api";
+import { placeCabinet } from "../../../utils/api";
 
 /**
  * @summary A component that displays a key for the room design

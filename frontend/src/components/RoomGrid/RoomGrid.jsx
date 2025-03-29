@@ -1,8 +1,6 @@
-import { 
-    Stage, 
+import {  
     Layer, 
     Rect,
-    Line,
     Text
 } from 'react-konva';
 import PropTypes from 'prop-types'
@@ -46,7 +44,7 @@ const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
     }
 
     return (
-        <Stage className='canvas' width={width} height={height}>
+        <>
             <Layer>
                 {/* Left Text */}
                 <Text
@@ -79,40 +77,10 @@ const RoomGrid = ({footPx, leftWallFeet, topWallFeet, rightWallFeet}) => {
                 />
             </Layer>
             <Layer>
-                {/* Left Border */}
-                <Line
-                    x={textOffsetPx}
-                    y={textOffsetPx}
-                    points={[0, 0, 0, leftWallFeet * footPx]}
-                    stroke='black'
-                    strokeWidth={3}
-                />
-
-                {/* Top Border */}
-                <Line
-                    x={textOffsetPx}
-                    y={textOffsetPx}
-                    points={[0, 0, topWallFeet * footPx, 0]}
-                    stroke='black'
-                    strokeWidth={3}
-                />
-                
-                {/* Right Border */}
-                <Line
-                    x={(topWallFeet * footPx) + textOffsetPx}
-                    y={textOffsetPx}
-                    points={[
-                        0, 0,
-                        0, rightWallFeet * footPx]}
-                    stroke='black'
-                    strokeWidth={3}
-                />
-
                 {/* Grid */}
                 {gridRects}
             </Layer>
-        </Stage>
-        
+        </>
     );
 }
 

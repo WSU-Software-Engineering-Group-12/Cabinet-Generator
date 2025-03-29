@@ -32,7 +32,6 @@ const Wall = ({lengthFeet, orientation, footPx = defaultFootPx, offset}) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
     const [uppers, setUppers] = useState([]);
-    console.log("Props Check - lengthFeet:", lengthFeet, "orientation:", orientation, "footPx:", footPx);
 
     useEffect(() => {
         const fetchWall = async () => {

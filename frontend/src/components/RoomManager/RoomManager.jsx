@@ -31,17 +31,17 @@ const RoomManager = () => {
     }
     return (
         <div>
-            <Stage width={5000} height={5000}>
-                <Wall lengthFeet={50} orientation="left" />
-                <Wall lengthFeet={100} orientation="top" />
-                <Wall lengthFeet={200} orientation="right" offset={100} />
-            </Stage>
             {!roomDetails ? (
                 <button onClick={handleRoomDetails}>Enter Room Details</button>
             ) : (
                 <>
                     <h2>Room Layout</h2>
-                    <RoomGrid {...roomDetails}/>
+                    <Stage width={5000} height={5000}>
+                        <Wall lengthFeet={roomDetails.leftWallFeet} orientation="left" />
+                        <Wall lengthFeet={roomDetails.topWallFeet} orientation="top" />
+                        <Wall lengthFeet={roomDetails.rightWallFeet} orientation="right" offset={roomDetails.topWallFeet} />
+                    </Stage>
+                    <RoomGrid />
                 </>
             )}
             <ExportToPDF />

@@ -1,10 +1,12 @@
+import './ExportToPDF.css';
+
 const ExportToPDF = () => {
     const handleDownloadPDF = () => {
         print();
       };
 
     return (
-        <button onClick={handleDownloadPDF}>Export to PDF</button>
+        <button onClick={handleDownloadPDF}>Save Layout</button>
     )
 }
 

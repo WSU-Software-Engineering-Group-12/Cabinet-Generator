@@ -1,6 +1,5 @@
 import { useState } from "react";
 import RoomGrid from '../RoomGrid/RoomGrid.jsx';
-import ExportToPDF from '../ExportToPDF/ExportToPDF.jsx';
 import Wall from "../Wall/Wall.jsx";
 import { Group, Layer, Stage } from "react-konva";
 import { defaultGridOffset, defaultInchPx } from "../../../utils/globalVars.js";
@@ -26,20 +25,21 @@ const RoomManager = () => {
         }
     
         setRoomDetails({
-          footPx: defaultInchPx,
+          inchPx: defaultInchPx,
           leftWallFeet,
           topWallFeet,
           rightWallFeet
         });
+        // Update the background color to better reflect a sheet of paper
+        document.documentElement.style.backgroundColor = 'white';
+        document.documentElement.style.color = 'black';
     }
 
     const getStageHeight = () => {
         if(!roomDetails) return window.innerHeight;
 
-        const leftWallHeight = roomDetails.leftWallFeet * roomDetails.footPx;
-        const rightWallHeight = roomDetails.rightWallFeet * roomDetails.footPx;
-
-        return Math.max(leftWallHeight, rightWallHeight);
+        // Find the biggest side and base the canvas's size off of that
+        return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset;
     }
 
     return (
@@ -55,7 +55,6 @@ const RoomManager = () => {
                 <div className="flex-box">
                     <div className='flex-item'>
                         <CabinetKey />
-                        <ExportToPDF />
                     </div>
 
                     <div className='flex-item'>

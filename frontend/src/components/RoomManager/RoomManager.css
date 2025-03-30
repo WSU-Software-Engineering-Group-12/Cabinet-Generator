@@ -13,13 +13,18 @@
 
 .flex-box {
     display: flex;
-    
+
 }
 
 h1 {
     font-size: 9em;
     margin-bottom: 5px;
     margin-top: -2em;
+}
+
+.flex-item h2 {
+    text-align: left;
+    font-size: 3em;
 }
 
 button {

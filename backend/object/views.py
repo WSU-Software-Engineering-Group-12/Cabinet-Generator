@@ -1,9 +1,9 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Cabinet
+from .models.cabinet import Cabinet
+from .models.wall import Wall
+import traceback
 
-# Create your views here.
 @api_view(['POST'])
 def place_cabinet(request):
     """
@@ -24,11 +24,12 @@ def place_cabinet(request):
     try:
         print('about to place cabinet')
         cabinet = Cabinet(
-            _name=cabinet_data['name'],
-            _width=cabinet_data['width'],
-            _height=cabinet_data['height'],
-            _position_x=float(x),
-            _position_y=float(y)
+            name=cabinet_data['name'],
+            width=cabinet_data['width'],
+            height=cabinet_data['height'],
+            depth=cabinet_data['depth'],
+            position_x=float(x),
+            position_y=float(y)
         )
         print('placed cabinet')
         cabinet.save()
@@ -41,10 +42,116 @@ def place_cabinet(request):
 
     response_data = {
         'name': cabinet.__str__(),
-        'width': cabinet.get_dimensions()[0],
-        'height': cabinet.get_dimensions()[1],
-        'position_x': cabinet.get_position()[0],
-        'position_y': cabinet.get_position()[1]
+        'width': cabinet.get_dimensions()['width'],
+        'height': cabinet.get_dimensions()['height'],
+        'depth': cabinet.get_dimensions()['depth'],
+        'position_x': cabinet.get_position()['x'],
+        'position_y': cabinet.get_position()['y']
     }
 
     return Response({'placed_cabinet': response_data})
+
+@api_view(['POST'])
+def generate_wall(request):
+    """
+    Endpoint to generate a cabinet layout for a given wall width and generation type.
+
+    ### Expected JSON payload:
+    {
+        "width": number,           # The width of the wall in inches
+        "orientation": string       # One of "left", "top", or "right"
+    }
+
+    ### Response JSON format:
+    {
+        "cabinets": {
+            "bases": [...],  # List of base cabinets
+            "uppers": [...]  # List of upper cabinets
+        }
+    }
+    """
+    data = request.data
+    print("RECEIVED generate_wall request data:", data)
+
+    width = data.get("width")
+    orientation = data.get("orientation") # Has to be left, right, or top
+
+    if width is None:
+        return Response({"error": "Width is required"}, status=400)
+    
+    try:
+        wall = Wall(width=width)
+
+        if orientation == "left":
+            wall.generation_b1()
+            wall.generation_u1()
+        elif orientation == "top":
+            wall.generation_b2()
+            wall.generation_u2()
+        elif orientation == "right":
+            wall.generation_b1()
+            wall.generation_u1()
+        else:
+            raise ValueError(f"{orientation} is not a valid entry for orientation type")
+
+        response_data = {
+            "cabinets": {
+                "bases": extract_cabinet_details(wall.bases, is_base=True),
+                "uppers": extract_cabinet_details(wall.uppers, is_base=False)
+            }
+        }
+
+        print(f"Generated cabinets: {response_data}")
+        return Response(response_data)
+    
+    except Exception as e:
+        print("Error in generate_wall:", str(e))
+        print(traceback.format_exc())
+        return Response({"error": str(e)}, status=500)
+
+# Helper function for generate_wall
+def extract_cabinet_details(cabinets, is_base=True):
+    cabinet_details = []
+    for cabinet in cabinets:
+        if cabinet[0] in ["B", "F", "U", "C"]:  # Consider all cabinet types
+            try:
+                # Manually input dimensions for corners
+                if cabinet == "BC36": # Base corner
+                    cab_width = 36
+                    cab_height = 36
+                    cab_depth = 36
+                    cabinet_details.append({
+                        "name": cabinet,
+                        "width": cab_width,
+                        "height": cab_height,
+                        "depth": cab_depth
+                    })
+                    continue
+                if cabinet == "UC24": # Upper corner
+                    cab_width = 24
+                    cab_height = 24
+                    cab_depth = 24
+                    cabinet_details.append({
+                        "name": cabinet,
+                        "width": cab_width,
+                        "height": cab_height,
+                        "depth": cab_depth
+                    })
+                    continue
+
+                # Handle regular cabinets
+                cab_width = int(cabinet[1:]) if cabinet[1:].isdigit() else 0
+                cab_height = Cabinet.STANDARD_HEIGHT
+                cab_depth = (
+                    Cabinet.STANDARD_BASE_DEPTH if is_base else Cabinet.STANDARD_UPPER_DEPTH
+                )
+
+                cabinet_details.append({
+                    "name": cabinet,
+                    "width": cab_width,
+                    "height": cab_height,
+                    "depth": cab_depth
+                })
+            except ValueError:
+                print(f"Skipping invalid cabinet entry: {cabinet}")
+    return cabinet_details

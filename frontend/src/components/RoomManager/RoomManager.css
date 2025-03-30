@@ -1,0 +1,42 @@
+.room-manager {
+    text-align: center;
+}
+
+.intro-text {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    height: 100vh; /* Full height of the viewport */
+    width: 100vw;
+    flex-direction: column;
+}
+
+.flex-box {
+    display: flex;
+    
+}
+
+h1 {
+    font-size: 9em;
+    margin-bottom: 5px;
+    margin-top: -2em;
+}
+
+button {
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    padding: .8em;
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 4em;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: rgb(152, 152, 152);
+}
+
+button:active {
+    background-color: rgb(68, 68, 68);
+}

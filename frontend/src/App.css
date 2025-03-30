@@ -1,8 +1,6 @@
-/*html, body, #root {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-}*/
+body {
+  font-family: sans-serif;
+}
 
 html {
   background-color: rgb(20, 40, 69);

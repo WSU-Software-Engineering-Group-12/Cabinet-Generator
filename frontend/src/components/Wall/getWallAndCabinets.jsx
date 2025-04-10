@@ -1,5 +1,6 @@
 import { Rect } from "react-konva";
 import { baseColor, upperColor, cabinetFill } from "../../../utils/globalVars";
+import Cabinet from "../Cabinet/Cabinet";
 
 const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) => {
     let cabinetRects = [];
@@ -15,7 +16,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
             const rectWidth = cabinet.width * inchPx;
             const rectHeight = cabinet.depth * inchPx;
             const rect = (
-                <Rect
+                <Cabinet
                     key={`${keyPrefix}top-${index}`}
                     x={orientation === "left" ? x : x - rectHeight}
                     y={cumulativeY}
@@ -24,6 +25,8 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     fill={cabinetFill}
                     stroke={color}
                     strokeWidth={3}
+                    isBase={isBase}
+                    orientation={orientation}
                 />
             );
 
@@ -40,7 +43,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
             const rectWidth = cabinet.width * inchPx;
             const rectHeight = cabinet.depth * inchPx;
             const rect = (
-                <Rect
+                <Cabinet
                     key={`${keyPrefix}top-${index}`}
                     x={cumulativeX}
                     y={y}
@@ -49,6 +52,8 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     fill={cabinetFill}
                     stroke={color}
                     strokeWidth={3}
+                    isBase={isBase}
+                    orientation={orientation}
                 />
             );
 

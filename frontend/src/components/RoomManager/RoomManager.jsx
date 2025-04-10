@@ -66,13 +66,13 @@ const RoomManager = () => {
                                         orientation="left" 
                                     />
                                     <Wall 
-                                        lengthFeet={roomDetails.topWallFeet} 
-                                        orientation="top" 
-                                    />
-                                    <Wall 
                                         lengthFeet={roomDetails.rightWallFeet}
                                         orientation="right" 
                                         offset={roomDetails.topWallFeet} 
+                                    />
+                                    <Wall 
+                                        lengthFeet={roomDetails.topWallFeet} 
+                                        orientation="top" 
                                     />
                                 </Group>
                             </Layer>

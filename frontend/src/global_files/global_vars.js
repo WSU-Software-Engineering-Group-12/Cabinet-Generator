@@ -1,1 +1,0 @@
-export const FOOT_PX = 10;

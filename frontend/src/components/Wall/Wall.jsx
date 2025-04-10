@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Group } from "react-konva";
 import { generateWall } from "../../../utils/api";
 import PropTypes from "prop-types";
@@ -9,7 +9,6 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
     const [uppers, setUppers] = useState([]);
-    const topGroup = useRef(null);
 
     useEffect(() => {
         const fetchWall = async () => {
@@ -30,12 +29,6 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
         };
 
         fetchWall();
-
-        // Ensure the walls render on top of everything else
-        if (topGroup.current) {
-            topGroup.current.moveToTop();
-            topGroup.current.batchDraw(); // Force re-render
-        }
     }, [lengthFeet, orientation]);
 
     if (error) return <p>{error}</p>;
@@ -43,11 +36,21 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
 
     const { wallRect, baseRects, upperRects } = getWallAndCabinets(orientation, lengthFeet, footPx, offset, bases, uppers);
 
+    // After creating the rect groups, sort them so they render properly
+    const allRects = [
+        ...baseRects.map(cabinet => ({node: cabinet, zIndex: 1})),
+        ...upperRects.map(cabinet => ({node: cabinet, zIndex: 2})),
+        {node: wallRect, zIndex: 3}
+    ].sort((a, b) => a.zIndex - b.zIndex).map(obj => obj.node);
+
+    console.log("All Rects:");
+    allRects.forEach((rect, index) => {
+        console.log(`Rect ${index}:`, rect.key)
+    })
+
     return (
         <>
-            <Group>{baseRects}</Group>
-            <Group>{upperRects}</Group>
-            <Group ref={topGroup}>{wallRect}</Group>
+            <Group>{allRects}</Group>
         </>
     );
 };

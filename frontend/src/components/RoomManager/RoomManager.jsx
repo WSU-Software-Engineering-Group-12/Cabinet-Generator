@@ -1,5 +1,4 @@
 import { useState } from "react";
-import RoomGrid from '../RoomGrid/RoomGrid.jsx';
 import Wall from "../Wall/Wall.jsx";
 import { Group, Layer, Stage } from "react-konva";
 import { defaultGridOffset, defaultInchPx } from "../../../utils/globalVars.js";
@@ -62,11 +61,6 @@ const RoomManager = () => {
                         <Stage width={window.innerWidth} height={getStageHeight()}>
                             <Layer>
                                 <Group x={defaultGridOffset} y={defaultGridOffset}>
-                                    <RoomGrid 
-                                        leftWallFeet={roomDetails.leftWallFeet}
-                                        topWallFeet={roomDetails.topWallFeet}
-                                        rightWallFeet={roomDetails.rightWallFeet}
-                                    />
                                     <Wall 
                                         lengthFeet={roomDetails.leftWallFeet} 
                                         orientation="left" 

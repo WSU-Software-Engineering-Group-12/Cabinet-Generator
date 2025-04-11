@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { defaultInchPx } from "../../../utils/globalVars";
 
 const Measurement = ({ x, y, width, height, orientation, parentType }) => {
-    const fontSize = 20;
+    const fontSize = 15;
     const textWidth = 60;
 
     const { 
@@ -30,7 +30,7 @@ const Measurement = ({ x, y, width, height, orientation, parentType }) => {
                 width={dashedLines.last.width}
                 height={dashedLines.last.height}
                 stroke="grey"
-                strokeWidth={3}
+                strokeWidth={2}
                 dash={[10, 5]}
             />
 
@@ -81,13 +81,13 @@ const calculateMeasurements = ({ x, y, width, height, orientation, parentType, f
     // Measurements should be placed base -> upper -> wall. Change the offset accordingly
     switch(parentType) {
         case "base":
-            mainLine.offset = 10;
+            mainLine.offset = 25;
             break;
         case "upper":
-            mainLine.offset = 20;
+            mainLine.offset = 150;
             break;
         case "wall":
-            mainLine.offset = 200;
+            mainLine.offset = 250;
             break;
         default:
             console.warn("Invalid parent for measurement:", parentType);
@@ -99,29 +99,29 @@ const calculateMeasurements = ({ x, y, width, height, orientation, parentType, f
             mainLine.x = x - mainLine.offset;
             mainLine.y = y;
             mainLine.height = height;
-            mainLine.width = 0;
+            mainLine.width = 1;
 
-            dashedLines.first = { height: 0, width: mainLine.offset, x: mainLine.x, y: y }
-            dashedLines.last = { height: 0, width: mainLine.offset, x: mainLine.x, y: y + height }
+            dashedLines.first = { height: 1, width: mainLine.offset, x: mainLine.x, y: y }
+            dashedLines.last = { height: 1, width: mainLine.offset, x: mainLine.x, y: y + height }
             
             measurementText = {
                 text: `${height / defaultInchPx} in`,
                 x: x - mainLine.offset - textWidth, 
-                y: (height / 2) - (fontSize / 2)
+                y: y + (height / 2) - (fontSize / 2)
             }
             break;
         case "top":
             mainLine.x = x;
             mainLine.y = y - mainLine.offset;
-            mainLine.height = 0;
+            mainLine.height = 1;
             mainLine.width = width;
 
-            dashedLines.first = { height: mainLine.offset, width: 0, x: x, y: y - mainLine.offset }
-            dashedLines.last = { height: mainLine.offset, width: 0, x: x + width, y: y - mainLine.offset }
+            dashedLines.first = { height: mainLine.offset, width: 1, x: x, y: y - mainLine.offset }
+            dashedLines.last = { height: mainLine.offset, width: 1, x: x + width, y: y - mainLine.offset }
             
             measurementText = {
                 text: `${width / defaultInchPx} in`,
-                x: (width / 2) - (textWidth / 2), 
+                x: x + (width / 2) - (textWidth / 2), 
                 y: y - mainLine.offset - fontSize
             }
             break;
@@ -129,15 +129,15 @@ const calculateMeasurements = ({ x, y, width, height, orientation, parentType, f
             mainLine.x = x + mainLine.offset;
             mainLine.y = y;
             mainLine.height = height;
-            mainLine.width = 0;
+            mainLine.width = 1;
 
-            dashedLines.first = { height: 0, width: mainLine.offset, x: x, y: y }
-            dashedLines.last = { height: 0, width: mainLine.offset, x: x, y: y + height }
+            dashedLines.first = { height: 1, width: mainLine.offset, x: x, y: y }
+            dashedLines.last = { height: 1, width: mainLine.offset, x: x, y: y + height }
             
             measurementText = {
                 text: `${height / defaultInchPx} in`,
                 x: x + mainLine.offset, 
-                y: (height / 2) - (fontSize / 2)
+                y: y + (height / 2) - (fontSize / 2)
             }
             break;
         default:

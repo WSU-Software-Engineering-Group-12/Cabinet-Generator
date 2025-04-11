@@ -1,12 +1,13 @@
 import { Rect, Text } from "react-konva";
 import PropTypes from "prop-types";
+import Measurement from "../Measurement/Measurement";
 
 const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name}) => {
     const textSize = 15;
     const isFiller = name[0] === "F" ? true : false;
     
     // Determine the text offset based off of orientation and base/upper status
-    let textX = null, textY = null; // Initialize positions to 0
+    let textX, textY = 0; // Initialize positions to 0
 
     if(!isBase) {
         // ALL UPPERS: x, y positions are centered
@@ -25,8 +26,6 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
         }
 
     } else {
-        
-
         // Different conditions for base cabinets depending on orientation
         switch(orientation) {
             case "left":
@@ -67,6 +66,14 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
                 align="center"
                 text={isFiller ? "" : name} // If a cabinet is a filler, do not draw its name
                 fontSize={textSize}
+            />
+            <Measurement
+                x={orientation === "right" ? x + width : x}
+                y={y}
+                width={width}
+                height={height}
+                orientation={orientation}
+                parentType={isBase ? "base" : "upper"}
             />
         </>
     )

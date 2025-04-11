@@ -83,6 +83,8 @@ export const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, base
     let wallRect = null;
     let upperRects = [];
     let baseRects = [];
+    let wallProps = {};
+    let wallKey = "";
 
     if (orientation === "top") {
         let startingX = 36 * inchPx; // Start after corner cabinet
@@ -91,20 +93,25 @@ export const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, base
         startingX = 24 * inchPx; // Update to uppers smaller size
         upperRects = generateCabinets(orientation, startingX, 0, uppers, inchPx, upperColor, false);
 
-        wallRect = <Rect x={0} y={0} width={wallLengthPx} height={5} fill="black" key="top-wall" />;
+        wallKey = "top-wall";
+        wallProps = { x: 0, y: 0, width: wallLengthPx, height: 5, fill: "black", orientation: orientation };
     } else if (orientation === "left") {
         let startingY = 0;
         baseRects = generateCabinets(orientation, 0, startingY, bases, inchPx, baseColor, true);
         upperRects = generateCabinets(orientation, 0, startingY, uppers, inchPx, upperColor, false);
 
-        wallRect = <Rect x={0} y={0} width={5} height={wallLengthPx} fill="black" key="left-wall" />;
+        wallKey = "left-wall";
+        wallProps = { x: 0, y: 0, width: 5, height: wallLengthPx, fill: "black", orientation: orientation };
     } else if (orientation === "right") {
         let startingY = 0;
         baseRects = generateCabinets(orientation, offset * inchPx, startingY, bases, inchPx, baseColor, true);
         upperRects = generateCabinets(orientation, offset * inchPx, startingY, uppers, inchPx, upperColor, false);
 
-        wallRect = <Rect x={offset * inchPx} y={0} width={5} height={wallLengthPx} fill="black" key="right-wall" />;
+        wallKey = "right-wall";
+        wallProps = { x: offset * inchPx, y: 0, width: 5, height: wallLengthPx, fill: "black", orientation: orientation };
     }
 
-    return { wallRect, baseRects, upperRects };
+    wallRect = <Rect {...wallProps} key={wallKey} />
+
+    return { wallRect, wallProps, baseRects, upperRects };
 };

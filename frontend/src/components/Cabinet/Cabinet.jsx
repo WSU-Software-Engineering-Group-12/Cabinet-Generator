@@ -80,7 +80,7 @@ Cabinet.propTypes = {
     stroke: PropTypes.string,
     strokeWidth: PropTypes.number,
     isBase: PropTypes.bool.isRequired,
-    orientation: PropTypes.string.isRequired,
+    orientation: PropTypes.oneOf(["left", "top", "right"]).isRequired,
     name: PropTypes.string.isRequired
   };
   

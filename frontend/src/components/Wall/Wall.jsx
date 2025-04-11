@@ -4,6 +4,7 @@ import { generateWall } from "../../../utils/api";
 import PropTypes from "prop-types";
 import { defaultInchPx } from "../../../utils/globalVars";
 import { getWallAndCabinets } from "./getWallAndCabinets";
+import Measurement from "../Measurement/Measurement";
 
 const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
     const [error, setError] = useState(null);
@@ -34,7 +35,14 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
     if (error) return <p>{error}</p>;
     if (bases.length === 0 && uppers.length === 0) return null;
 
-    const { wallRect, baseRects, upperRects } = getWallAndCabinets(orientation, lengthFeet, footPx, offset, bases, uppers);
+    const { wallRect, wallProps, baseRects, upperRects } = getWallAndCabinets(
+        orientation, 
+        lengthFeet, 
+        footPx, 
+        offset, 
+        bases, 
+        uppers
+    );
 
     // After creating the rect groups, sort them so they render properly
     const allRects = [
@@ -43,14 +51,17 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
         {node: wallRect, zIndex: 3}
     ].sort((a, b) => a.zIndex - b.zIndex).map(obj => obj.node);
 
-    console.log("All Rects:");
-    allRects.forEach((rect, index) => {
-        console.log(`Rect ${index}:`, rect.key)
-    })
-
     return (
         <>
             <Group>{allRects}</Group>
+            <Measurement 
+                x={wallProps.x}
+                y={wallProps.y}
+                width={wallProps.width}
+                height={wallProps.height}
+                orientation={wallProps.orientation}
+                parentType="wall"
+            />
         </>
     );
 };

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name}) => {
     const textSize = 15;
+    const isFiller = name[0] === "F" ? true : false;
     
     // Determine the text offset based off of orientation and base/upper status
     let textX = null, textY = null; // Initialize positions to 0
@@ -64,7 +65,7 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
                 y={textY}
                 width={width}
                 align="center"
-                text={name}
+                text={isFiller ? "" : name} // If a cabinet is a filler, do not draw its name
                 fontSize={textSize}
             />
         </>

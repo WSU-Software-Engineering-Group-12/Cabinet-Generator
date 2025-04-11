@@ -1,10 +1,52 @@
 import { Rect, Text } from "react-konva";
 import PropTypes from "prop-types";
 
-const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation}) => {
-    // Offset the text to the right on base cabinets so it shows up
-    const xPos = isBase ? x + 25 : x;
-    const yPos = isBase ? y + (height / 2) + 25 : y + (height / 2);
+const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name}) => {
+    const textSize = 15;
+    
+    // Determine the text offset based off of orientation and base/upper status
+    let textX = null, textY = null; // Initialize positions to 0
+
+    if(!isBase) {
+        // ALL UPPERS: x, y positions are centered
+        textX = x; 
+        textY = y + (height / 2);
+    } else if (name === "BC36") {
+        // BC36 signifies a base corner, handle that special logic
+        if(orientation === "left") {
+            textX = x + (width / 3);
+            textY = y + (height / 1.5) + textSize;
+        } else if(orientation === "right") {
+            textX = x - (width / 3);
+            textY = y + (height / 1.5) + textSize;
+        } else {
+            console.warn("Corners should not appear in orientation", orientation)
+        }
+
+    } else {
+        
+
+        // Different conditions for base cabinets depending on orientation
+        switch(orientation) {
+            case "left":
+                // Center vertically, towards right edge
+                textX = x + (width / 4);
+                textY = y + (height / 2);
+                break;
+            case "top":
+                // Center horizontally, towards bottom edge
+                textX = x;
+                textY = y + (height / 1.75) + textSize;
+                break;
+            case "right":
+                // Center vertically, towards left edge
+                textX = x - (width / 4);
+                textY = y + (height / 2);
+                break;
+            default:
+                console.warn("Unknown orientation:", orientation);
+        }
+    }
 
     return (
         <>
@@ -18,12 +60,12 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
                 strokeWidth={strokeWidth}
             />
             <Text
-                x={xPos}
-                y={yPos}
+                x={textX}
+                y={textY}
                 width={width}
                 align="center"
-                text="BC36"
-                fontSize={15}
+                text={name}
+                fontSize={textSize}
             />
         </>
     )
@@ -36,6 +78,9 @@ Cabinet.propTypes = {
     fill: PropTypes.string,
     stroke: PropTypes.string,
     strokeWidth: PropTypes.number,
+    isBase: PropTypes.bool.isRequired,
+    orientation: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
   };
   
   Cabinet.defaultProps = {

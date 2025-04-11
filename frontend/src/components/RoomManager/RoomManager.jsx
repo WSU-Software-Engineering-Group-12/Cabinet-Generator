@@ -38,7 +38,7 @@ const RoomManager = () => {
         if(!roomDetails) return window.innerHeight;
 
         // Find the biggest side and base the canvas's size off of that
-        return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset;
+        return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset + 15;
     }
 
     return (

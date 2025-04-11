@@ -27,6 +27,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     strokeWidth={3}
                     isBase={isBase}
                     orientation={orientation}
+                    name={cabinet.name}
                 />
             );
 
@@ -54,6 +55,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     strokeWidth={3}
                     isBase={isBase}
                     orientation={orientation}
+                    name={cabinet.name}
                 />
             );
 

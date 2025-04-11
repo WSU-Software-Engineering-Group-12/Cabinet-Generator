@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Group } from "react-konva";
 import { generateWall } from "../../../utils/api";
 import PropTypes from "prop-types";
 import { defaultInchPx } from "../../../utils/globalVars";
 import { getWallAndCabinets } from "./getWallAndCabinets";
+import Measurement from "../Measurement/Measurement";
 
 const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
     const [uppers, setUppers] = useState([]);
-    const topGroup = useRef(null);
 
     useEffect(() => {
         const fetchWall = async () => {
@@ -30,24 +30,38 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
         };
 
         fetchWall();
-
-        // Ensure the walls render on top of everything else
-        if (topGroup.current) {
-            topGroup.current.moveToTop();
-            topGroup.current.batchDraw(); // Force re-render
-        }
     }, [lengthFeet, orientation]);
 
     if (error) return <p>{error}</p>;
     if (bases.length === 0 && uppers.length === 0) return null;
 
-    const { wallRect, baseRects, upperRects } = getWallAndCabinets(orientation, lengthFeet, footPx, offset, bases, uppers);
+    const { wallRect, wallProps, baseRects, upperRects } = getWallAndCabinets(
+        orientation, 
+        lengthFeet, 
+        footPx, 
+        offset, 
+        bases, 
+        uppers
+    );
+
+    // After creating the rect groups, sort them so they render properly
+    const allRects = [
+        ...baseRects.map(cabinet => ({node: cabinet, zIndex: 1})),
+        ...upperRects.map(cabinet => ({node: cabinet, zIndex: 2})),
+        {node: wallRect, zIndex: 3}
+    ].sort((a, b) => a.zIndex - b.zIndex).map(obj => obj.node);
 
     return (
         <>
-            <Group>{baseRects}</Group>
-            <Group>{upperRects}</Group>
-            <Group ref={topGroup}>{wallRect}</Group>
+            <Group>{allRects}</Group>
+            <Measurement 
+                x={wallProps.x}
+                y={wallProps.y}
+                width={wallProps.width}
+                height={wallProps.height}
+                orientation={wallProps.orientation}
+                parentType="wall"
+            />
         </>
     );
 };

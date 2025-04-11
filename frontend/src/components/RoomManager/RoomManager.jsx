@@ -1,5 +1,4 @@
 import { useState } from "react";
-import RoomGrid from '../RoomGrid/RoomGrid.jsx';
 import Wall from "../Wall/Wall.jsx";
 import { Group, Layer, Stage } from "react-konva";
 import { defaultGridOffset, defaultInchPx } from "../../../utils/globalVars.js";
@@ -39,7 +38,7 @@ const RoomManager = () => {
         if(!roomDetails) return window.innerHeight;
 
         // Find the biggest side and base the canvas's size off of that
-        return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset;
+        return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset + 15;
     }
 
     return (
@@ -62,23 +61,18 @@ const RoomManager = () => {
                         <Stage width={window.innerWidth} height={getStageHeight()}>
                             <Layer>
                                 <Group x={defaultGridOffset} y={defaultGridOffset}>
-                                    <RoomGrid 
-                                        leftWallFeet={roomDetails.leftWallFeet}
-                                        topWallFeet={roomDetails.topWallFeet}
-                                        rightWallFeet={roomDetails.rightWallFeet}
-                                    />
                                     <Wall 
                                         lengthFeet={roomDetails.leftWallFeet} 
                                         orientation="left" 
                                     />
                                     <Wall 
-                                        lengthFeet={roomDetails.topWallFeet} 
-                                        orientation="top" 
-                                    />
-                                    <Wall 
                                         lengthFeet={roomDetails.rightWallFeet}
                                         orientation="right" 
                                         offset={roomDetails.topWallFeet} 
+                                    />
+                                    <Wall 
+                                        lengthFeet={roomDetails.topWallFeet} 
+                                        orientation="top" 
                                     />
                                 </Group>
                             </Layer>

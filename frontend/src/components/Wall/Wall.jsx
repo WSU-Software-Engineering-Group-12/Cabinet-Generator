@@ -6,7 +6,7 @@ import { defaultInchPx } from "../../../utils/globalVars";
 import { getWallAndCabinets } from "./getWallAndCabinets";
 import Measurement from "../Measurement/Measurement";
 
-const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
+const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset, onCabinetClick }) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
     const [uppers, setUppers] = useState([]);
@@ -41,7 +41,8 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset }) => {
         footPx, 
         offset, 
         bases, 
-        uppers
+        uppers,
+        onCabinetClick
     );
 
     // After creating the rect groups, sort them so they render properly
@@ -79,6 +80,7 @@ Wall.propTypes = {
         }
         return null;
     },
+    onCabinetClick: PropTypes.func.isRequired,
 };
 
 export default Wall;

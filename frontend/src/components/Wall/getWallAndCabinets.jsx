@@ -2,7 +2,7 @@ import { Rect } from "react-konva";
 import { baseColor, upperColor, cabinetFill } from "../../../utils/globalVars";
 import Cabinet from "../Cabinet/Cabinet";
 
-const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) => {
+const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, onCabinetClick) => {
     let cabinetRects = [];
 
     // Dynamically create a unique key prefix to be added in front of each index
@@ -28,6 +28,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     isBase={isBase}
                     orientation={orientation}
                     name={cabinet.name}
+                    onClick={onCabinetClick}
                 />
             );
 
@@ -56,6 +57,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase) =>
                     isBase={isBase}
                     orientation={orientation}
                     name={cabinet.name}
+                    onClick={onCabinetClick}
                 />
             );
 

@@ -3,10 +3,13 @@ import Wall from "../Wall/Wall.jsx";
 import { Group, Layer, Stage } from "react-konva";
 import { defaultGridOffset, defaultInchPx } from "../../../utils/globalVars.js";
 import './RoomManager.css';
-import CabinetKey from '../CabinetKey/CabinetKey.jsx'
+import CabinetKey from '../CabinetKey/CabinetKey.jsx';
+import CabinetMenu from "../CabinetMenu/CabinetMenu.jsx";
 
 const RoomManager = () => {
     const [roomDetails, setRoomDetails] = useState(null);
+    const [isMenuVisible, setMenuVisible] = useState(false);
+    const [selectedCabinet, setSelectedCabinet] = useState(null);
 
     const handleRoomDetails = () => {
         const leftWallFeet = parseFloat(prompt("Enter the length of the left wall (in inches)"), 10);
@@ -41,6 +44,11 @@ const RoomManager = () => {
         return (Math.max(roomDetails.leftWallFeet, roomDetails.rightWallFeet) * roomDetails.inchPx) + defaultGridOffset + 15;
     }
 
+    const handleCabinetClick = (cabinetInfo) => {
+        setSelectedCabinet(cabinetInfo);  // Set selected cabinet data when clicked
+        setMenuVisible(true);  // Show the menu
+    }
+
     return (
         <div className="room-manager">
             {!roomDetails ? (
@@ -58,28 +66,34 @@ const RoomManager = () => {
 
                     <div className='flex-item'>
                         <h2>Room Layout</h2>
-                        <Stage width={window.innerWidth} height={getStageHeight()}>
+                        <Stage width={(roomDetails.topWallFeet * roomDetails.inchPx) + (defaultGridOffset * 2) + 15} height={getStageHeight()}>
                             <Layer>
                                 <Group x={defaultGridOffset} y={defaultGridOffset}>
                                     <Wall 
                                         lengthFeet={roomDetails.leftWallFeet} 
                                         orientation="left" 
+                                        onCabinetClick={handleCabinetClick} // Pass click info down to Wall
                                     />
                                     <Wall 
                                         lengthFeet={roomDetails.rightWallFeet}
                                         orientation="right" 
                                         offset={roomDetails.topWallFeet} 
+                                        onCabinetClick={handleCabinetClick} // Pass click info down to Wall
                                     />
                                     <Wall 
                                         lengthFeet={roomDetails.topWallFeet} 
                                         orientation="top" 
+                                        onCabinetClick={handleCabinetClick} // Pass click info down to Wall
                                     />
                                 </Group>
                             </Layer>
                             
                         </Stage>
                     </div>
-                    
+                    {/* Cabinet Menu Logic */}
+                    {isMenuVisible && (
+                        <CabinetMenu />
+                    )}
                 </div>
             )}
         </div>

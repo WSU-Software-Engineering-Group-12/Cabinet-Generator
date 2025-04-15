@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import { Rect, Text } from "react-konva";
 import PropTypes from "prop-types";
 import Measurement from "../Measurement/Measurement";
+import { cabinetFill } from "../../../utils/globalVars";
 
-const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name}) => {
+const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name, onClick}) => {
     const cabinetRef = useRef();
 
     useEffect(() => {
-
         // Handle mouse logic
         const cabinet = cabinetRef.current;
         cabinet.on('mouseenter', () => {
@@ -15,11 +15,22 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
             cabinet.getLayer().batchDraw();
         });
         cabinet.on('mouseleave', () => {
-            cabinet.fill(fill);
+            cabinet.fill(cabinetFill);
             cabinet.getLayer().batchDraw();
         });
-    }, []);
-    
+
+        const handleCabinetClick = () => {
+            onClick({ x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name });
+        }
+
+        cabinet.on('click', handleCabinetClick);
+
+        // Clean up
+        return () => {
+            cabinet.off('click', handleCabinetClick);
+        };
+    },[x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name, onClick]);
+
     const textSize = 15;
     const isFiller = name[0] === "F" ? true : false;
     
@@ -106,13 +117,15 @@ Cabinet.propTypes = {
     strokeWidth: PropTypes.number,
     isBase: PropTypes.bool.isRequired,
     orientation: PropTypes.oneOf(["left", "top", "right"]).isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
   };
   
   Cabinet.defaultProps = {
     fill: "gray",
     stroke: "black",
     strokeWidth: 2,
+    name: "UNDEF"
   };
 
 export default Cabinet;

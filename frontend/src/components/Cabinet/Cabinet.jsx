@@ -1,8 +1,25 @@
+import { useEffect, useRef } from "react";
 import { Rect, Text } from "react-konva";
 import PropTypes from "prop-types";
 import Measurement from "../Measurement/Measurement";
 
 const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name}) => {
+    const cabinetRef = useRef();
+
+    useEffect(() => {
+
+        // Handle mouse logic
+        const cabinet = cabinetRef.current;
+        cabinet.on('mouseenter', () => {
+            cabinet.fill('grey');
+            cabinet.getLayer().batchDraw();
+        });
+        cabinet.on('mouseleave', () => {
+            cabinet.fill(fill);
+            cabinet.getLayer().batchDraw();
+        });
+    }, []);
+    
     const textSize = 15;
     const isFiller = name[0] === "F" ? true : false;
     
@@ -51,6 +68,7 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
     return (
         <>
             <Rect
+                ref={cabinetRef}
                 x={x}
                 y={y}
                 width={width}

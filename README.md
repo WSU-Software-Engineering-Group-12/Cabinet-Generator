@@ -25,8 +25,9 @@ _NOTE: Even if you use the GitHub pages live link, you still have to run the bac
 ` - backend`
 ` - frontend`
 
-- Navigate to the backend folder: `cd backend`
+- Navigate to the backend folder and run the following command: `cd backend`
 - Start the Python virtual environment: On Mac `source venv/bin/activate`. Tk add Windows guide
+- Run the server: From the backend folder, run the command `python manage.py runserver`
 
 ### Starting the frontend
 - Navigate to the root folder

@@ -12,7 +12,7 @@ This will be a browser-based web app made with a React frontend and a Django bac
 - Find a way to make money off this app
 - Allow users to edit the cabinet layout
 
-## Usage Guidelines
+## Running The Code
 To use this repo, you need to start the backend on your local machine (port 8000)
 
 You can either start the frontend on your local machine (any port except for 8000). Or you can run it from our [live link on GitHub pages]([url](https://wsu-software-engineering-group-12.github.io/Cabinet-Generator/)).

@@ -91,8 +91,11 @@ const RoomManager = () => {
                         </Stage>
                     </div>
                     {/* Cabinet Menu Logic */}
-                    {isMenuVisible && (
-                        <CabinetMenu />
+                    {isMenuVisible && selectedCabinet && (
+                        <CabinetMenu
+                            setPopupVisible={setMenuVisible}
+                            cabinet={selectedCabinet}
+                        />
                     )}
                 </div>
             )}

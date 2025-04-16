@@ -3,7 +3,7 @@ import { Group, Rect } from "react-konva";
 import { generateWall } from "../../../utils/api";
 import PropTypes from "prop-types";
 import { defaultInchPx, baseColor, upperColor, cabinetFill } from "../../../utils/globalVars";
-import Cabinet from "../Cabinet/Cabinet";
+import WallItem from "../WallItem/WallItem.jsx";
 import Measurement from "../Measurement/Measurement";
 
 // -----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
             const rectWidth = cabinet.width * inchPx;
             const rectHeight = cabinet.depth * inchPx;
             const rect = (
-                <Cabinet
+                <WallItem
                     key={`${keyPrefix}top-${index}`}
                     x={orientation === "left" ? x : x - rectHeight}
                     y={cumulativeY}
@@ -46,7 +46,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
             const rectWidth = cabinet.width * inchPx;
             const rectHeight = cabinet.depth * inchPx;
             const rect = (
-                <Cabinet
+                <WallItem
                     key={`${keyPrefix}top-${index}`}
                     x={cumulativeX}
                     y={y}

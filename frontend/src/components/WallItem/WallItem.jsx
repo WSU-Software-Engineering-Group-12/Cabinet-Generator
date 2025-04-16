@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Measurement from "../Measurement/Measurement";
 import { cabinetFill } from "../../../utils/globalVars";
 
-const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name, onClick}) => {
+const WallItem = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orientation, name, onClick}) => {
     const cabinetRef = useRef();
 
     useEffect(() => {
@@ -107,7 +107,7 @@ const Cabinet = ({x, y, width, height, fill, stroke, strokeWidth, isBase, orient
         </>
     )
 }
-Cabinet.propTypes = {
+WallItem.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
@@ -121,11 +121,11 @@ Cabinet.propTypes = {
     onClick: PropTypes.func.isRequired,
   };
   
-  Cabinet.defaultProps = {
+  WallItem.defaultProps = {
     fill: "gray",
     stroke: "black",
     strokeWidth: 2,
     name: "UNDEF"
   };
 
-export default Cabinet;
+export default WallItem;

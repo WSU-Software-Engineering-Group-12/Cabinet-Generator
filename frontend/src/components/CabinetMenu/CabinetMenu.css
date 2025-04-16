@@ -24,6 +24,20 @@
 }
 
 /* Popup content styling */
-.popup-content button {
+.popup-flex {
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
     margin: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-row {
+    font-size: 1.35em;
+}
+
+.select-row button {
+    margin-top: .5em;
+    font-size: .65em;
 }

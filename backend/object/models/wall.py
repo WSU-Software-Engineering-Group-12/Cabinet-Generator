@@ -19,35 +19,33 @@ class Wall(Object):
         cabinets = []
 
         while remaining_width > 0:
-            placed = False  # Track if a cabinet was placed
+            placed = False
             for size in Cabinet.VALID_SIZES:
                 if size <= remaining_width:
                     cabinets.append(f"{cabinet_prefix}{size}")
                     remaining_width -= size
                     placed = True
-                    break  # Restart loop to try the largest possible cabinet
-            
-            # Adjust the previous cabinet if the remaining width is between 3 and 9 inches
+                    break
+
             if 3 < remaining_width < 9 and len(cabinets) > 0:
                 last_cabinet = cabinets.pop()
-                last_size = int(last_cabinet[1:])  # Extract size from name
-                if last_size - 6 in Cabinet.VALID_SIZES:  # Ensure new size is valid
+                last_size = int(last_cabinet[1:])
+                if last_size - 6 in Cabinet.VALID_SIZES:
                     new_size = last_size - 6
                     cabinets.append(f"{cabinet_prefix}{new_size}")
-                    remaining_width += 6  # Restore the removed width
+                    remaining_width += 6
                 else:
-                    cabinets.append(last_cabinet)  # Re-add the last cabinet if adjustment isn't possible
-            
-            # If no cabinet fits, add filler
+                    cabinets.append(last_cabinet)
+
             if not placed:
-                cabinets.append(f"F{remaining_width}")  # Use the remaining space as filler
-                remaining_width = 0  # Stop loop
+                cabinets.append(f"F{remaining_width}")
+                remaining_width = 0
 
         return cabinets
-    
+
     def fixed_pattern_fill(self, remaining_width, cabinet_prefix):
         """Fills cabinets using a fixed pattern and includes filler as needed."""
-        pattern = [27, 24, 21, 18, 12, 9]
+        pattern = [33, 27, 24, 21, 18, 12, 9]
         cabinets = []
 
         while remaining_width > 0:
@@ -58,48 +56,87 @@ class Wall(Object):
                     remaining_width -= size
                     placed = True
                     break
-                
+
             if 3 < remaining_width < 9 and len(cabinets) > 0:
                 last_cabinet = cabinets.pop()
-                last_size = int(last_cabinet[1:])  # Extract size from name
-                if last_size - 6 in Cabinet.VALID_SIZES:  # Ensure new size is valid
+                last_size = int(last_cabinet[1:])
+                if last_size - 6 in Cabinet.VALID_SIZES:
                     new_size = last_size - 6
                     cabinets.append(f"{cabinet_prefix}{new_size}")
-                    remaining_width += 6  # Restore the removed width
+                    remaining_width += 6
                 else:
-                    cabinets.append(last_cabinet)  # Re-add the last cabinet if adjustment isn't possible
-            
-            # If no cabinet fits but space is left, add filler
+                    cabinets.append(last_cabinet)
+
             if not placed:
                 cabinets.append(f"F{remaining_width}")
                 remaining_width = 0
-        
+
+        return cabinets
+
+    def rotating1_fill(self, remaining_width, cabinet_prefix, pattern=None):
+        """Fills cabinets by rotating through a list without repeating the same size."""
+        if pattern is None:
+            pattern = [18, 36, 30, 21, 18, 15, 12, 9]
+
+        cabinets = []
+        pattern_index = 0
+        pattern_len = len(pattern)
+
+        while remaining_width > 0:
+            attempted = 0
+            placed = False
+
+            while attempted < pattern_len:
+                size = pattern[pattern_index % pattern_len]
+                pattern_index += 1
+                attempted += 1
+
+                if size <= remaining_width:
+                    cabinets.append(f"{cabinet_prefix}{size}")
+                    remaining_width -= size
+                    placed = True
+                    break
+
+            if 3 < remaining_width < 9 and len(cabinets) > 0:
+                last_cabinet = cabinets.pop()
+                last_size = int(last_cabinet[1:])
+                if last_size - 6 in Cabinet.VALID_SIZES:
+                    new_size = last_size - 6
+                    cabinets.append(f"{cabinet_prefix}{new_size}")
+                    remaining_width += 6
+                else:
+                    cabinets.append(last_cabinet)
+
+            if not placed:
+                cabinets.append(f"F{remaining_width}")
+                remaining_width = 0
+
         return cabinets
 
     def generation_b1(self):
-        remaining_width = self.width - 36  # Leave space for Base Corner
-        self.bases = self.greedy_fill(remaining_width, "B")
-        self.bases.append("BC36")  # Add Base Corner at the end
+        remaining_width = self.width - 36
+        self.bases = self.rotating1_fill(remaining_width, "B")
+        self.bases.append("BC36")
 
     def generation_b2(self):
-        remaining_width = self.width - 72 # Leave space for Base Corner
-        self.bases = self.fixed_pattern_fill(remaining_width, "B")  # No Base Corner added
+        remaining_width = self.width - 72
+        self.bases = self.greedy_fill(remaining_width, "B")
 
     def generation_b3(self):
-        remaining_width = self.width - 36  # Leave space for Base Corner
-        self.bases = self.greedy_fill(remaining_width, "B")
-        self.bases.insert(0, "BC36")  # Add Base Corner at the beginning
+        remaining_width = self.width - 36
+        self.bases = self.fixed_pattern_fill(remaining_width, "B")
+        self.bases.insert(0, "BC36")
 
     def generation_u1(self):
-        remaining_width = self.width - 24  # Leave space for Upper Corner
+        remaining_width = self.width - 24
         self.uppers = self.greedy_fill(remaining_width, "U")
-        self.uppers.append("UC24")  # Add Upper Corner at the end
+        self.uppers.append("UC24")
 
     def generation_u2(self):
-        remaining_width = self.width - 48 # Leave space for Base Corner
-        self.uppers = self.greedy_fill(remaining_width, "U")  # No Upper Corner added
+        remaining_width = self.width - 48
+        self.uppers = self.greedy_fill(remaining_width, "U")
 
     def generation_u3(self):
-        remaining_width = self.width - 24  # Leave space for Upper Corner
+        remaining_width = self.width - 24
         self.uppers = self.greedy_fill(remaining_width, "U")
-        self.uppers.insert(0, "UC24")  # Add Upper Corner at the beginning
+        self.uppers.insert(0, "UC24")

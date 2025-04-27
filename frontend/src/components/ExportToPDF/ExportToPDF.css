@@ -1,3 +1,8 @@
+@page {
+    size: A4 landscape;
+}
+
+
 button {
     background-color: white;
     font-size: 1.25em;

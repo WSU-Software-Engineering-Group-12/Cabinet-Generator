@@ -6,14 +6,25 @@ import { defaultInchPx, baseColor, upperColor, cabinetFill } from "../../../util
 import WallItem from "../WallItem/WallItem.jsx";
 import Measurement from "../Measurement/Measurement";
 
-// -----------------------------------------------------------------------------
-// Helper function that generates Cabinet components given wall parameters.
+/**
+ * Generates a set of cabinet components given the wall's orientation and cabinet data.
+ * The cabinets are placed on the wall either vertically (for left/right orientations) 
+ * or horizontally (for top orientation).
+ *
+ * @param {string} orientation - The orientation of the wall, either "left", "right", or "top".
+ * @param {number} x - The initial x-coordinate for the first cabinet.
+ * @param {number} y - The initial y-coordinate for the first cabinet.
+ * @param {Array} cabArray - An array of cabinet objects, each containing width and depth.
+ * @param {number} inchPx - The conversion factor for inches to pixels.
+ * @param {string} color - The color used for the cabinet's stroke.
+ * @param {boolean} isBase - Flag to determine if the cabinet is a base or upper cabinet.
+ * @param {function} onCabinetClick - Callback function when a cabinet is clicked.
+ * @returns {Array} An array of React components representing the cabinets.
+ */
 const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, onCabinetClick) => {
     let cabinetRects = [];
-    // Create a unique key prefix for this set of cabinets.
     const keyPrefix = isBase ? "base-" : "upper-";
 
-    // If the wall is vertical (for left or right orientations)
     if (orientation === "left" || orientation === "right") {
         let cumulativeY = y;
         cabinetRects = cabArray.slice().reverse().map((cabinet, index) => {
@@ -39,7 +50,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
             return rect;
         });
     }
-    // If the wall is horizontal (orientation "top")
+
     if (orientation === "top") {
         let cumulativeX = x;
         cabinetRects = cabArray.map((cabinet, index) => {
@@ -69,8 +80,19 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
     return cabinetRects;
 };
 
-// -----------------------------------------------------------------------------
-// Helper that creates the wall rectangle and combines cabinet components.
+/**
+ * Creates the wall and its corresponding cabinets based on the wall orientation, length,
+ * and cabinet data (both base and upper cabinets).
+ *
+ * @param {string} orientation - The orientation of the wall, either "left", "right", or "top".
+ * @param {number} lengthFeet - The length of the wall in feet.
+ * @param {number} inchPx - The conversion factor for inches to pixels.
+ * @param {number} offset - The offset value used for right orientation walls.
+ * @param {Array} bases - The array of base cabinets.
+ * @param {Array} uppers - The array of upper cabinets.
+ * @param {function} onCabinetClick - Callback function when a cabinet is clicked.
+ * @returns {Object} An object containing the wall rectangle, wall properties, and the base and upper cabinet components.
+ */
 const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, bases, uppers, onCabinetClick) => {
     const wallLengthPx = lengthFeet * inchPx;
     let wallRect = null;
@@ -80,10 +102,10 @@ const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, bases, uppe
     let wallKey = "";
 
     if (orientation === "top") {
-        let startingX = 36 * inchPx; // Start after a corner cabinet.
+        let startingX = 36 * inchPx;
         baseRects = generateCabinets(orientation, startingX, 0, bases, inchPx, baseColor, true, onCabinetClick);
 
-        startingX = 24 * inchPx; // Adjust for upper cabinets.
+        startingX = 24 * inchPx;
         upperRects = generateCabinets(orientation, startingX, 0, uppers, inchPx, upperColor, false, onCabinetClick);
 
         wallKey = "top-wall";
@@ -109,8 +131,19 @@ const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, bases, uppe
     return { wallRect, wallProps, baseRects, upperRects };
 };
 
-// -----------------------------------------------------------------------------
-// Wall component that fetches wall data, builds the wall and its cabinets, and renders them.
+/**
+ * Wall component that fetches wall data, builds the wall, and renders the base and upper cabinets.
+ * This component interacts with the API to fetch cabinet data based on the wall's orientation and length.
+ * It then generates the wall and cabinet elements and renders them in the appropriate positions.
+ *
+ * @param {Object} props - The component's props.
+ * @param {number} props.lengthFeet - The length of the wall in feet.
+ * @param {string} props.orientation - The orientation of the wall, either "left", "right", or "top".
+ * @param {number} props.footPx - The conversion factor for feet to pixels. Defaults to `defaultInchPx`.
+ * @param {number} props.offset - The offset value for right-facing walls (only required for "right" orientation).
+ * @param {function} props.onCabinetClick - Callback function triggered when a cabinet is clicked.
+ * @returns {JSX.Element|null} The JSX elements to render the wall and cabinets, or `null` if data is unavailable.
+ */
 const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset, onCabinetClick }) => {
     const [error, setError] = useState(null);
     const [bases, setBases] = useState([]);
@@ -150,7 +183,6 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset, onCabin
         onCabinetClick
     );
 
-    // Merge and sort all elements for proper rendering order.
     const allRects = [
         ...baseRects.map(cabinet => ({ node: cabinet, zIndex: 1 })),
         ...upperRects.map(cabinet => ({ node: cabinet, zIndex: 2 })),
@@ -163,10 +195,10 @@ const Wall = ({ lengthFeet, orientation, footPx = defaultInchPx, offset, onCabin
         <>
             <Group>{allRects}</Group>
             <Measurement 
-                x={wallProps.x}
-                y={wallProps.y}
-                width={wallProps.width}
-                height={wallProps.height}
+                x={wallProps.x} 
+                y={wallProps.y} 
+                width={wallProps.width} 
+                height={wallProps.height} 
                 orientation={wallProps.orientation}
                 parentType="wall"
             />

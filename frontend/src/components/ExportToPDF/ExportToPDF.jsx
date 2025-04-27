@@ -1,5 +1,6 @@
 import './ExportToPDF.css';
 
+// TODO: Handle scaling better, might need to make a full new printing page
 const ExportToPDF = () => {
     const handleDownloadPDF = () => {
         print();

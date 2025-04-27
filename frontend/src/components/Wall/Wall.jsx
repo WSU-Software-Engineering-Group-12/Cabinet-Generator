@@ -32,7 +32,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
                     isBase={isBase}
                     orientation={orientation}
                     name={cabinet.name}
-                    onClick={onCabinetClick}
+                    onClick={() => onCabinetClick(cabinet)}
                 />
             );
             cumulativeY += rectWidth;
@@ -58,7 +58,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
                     isBase={isBase}
                     orientation={orientation}
                     name={cabinet.name}
-                    onClick={onCabinetClick}
+                    onClick={() => onCabinetClick(cabinet)}
                 />
             );
             cumulativeX += rectWidth;
@@ -71,7 +71,7 @@ const generateCabinets = (orientation, x, y, cabArray, inchPx, color, isBase, on
 
 // -----------------------------------------------------------------------------
 // Helper that creates the wall rectangle and combines cabinet components.
-export const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, bases, uppers, onCabinetClick) => {
+const getWallAndCabinets = (orientation, lengthFeet, inchPx, offset, bases, uppers, onCabinetClick) => {
     const wallLengthPx = lengthFeet * inchPx;
     let wallRect = null;
     let upperRects = [];

@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import "./CabinetMenu.css";
 import { defaultInchPx } from "../../../utils/globalVars";
 
-const CabinetMenu = ({ setPopupVisible, cabinet  }) => {
+const CabinetMenu = ({ setPopupVisible, cabinet, onSubmit  }) => {
     const baseOptions = ["Sink", "Stove", "Fridge"];
     const upperOptions = ["Window"];
 
     const [selectedOption, setSelectedOption] = useState("");
+    //const [selectedCabinet, setSelectedCabinet] = useState(null);
 
     const options = cabinet.isBase ? baseOptions : upperOptions;
 
@@ -16,7 +17,13 @@ const CabinetMenu = ({ setPopupVisible, cabinet  }) => {
     }
 
     const handleChange = (e) => {
-        setSelectedOption(e)
+        setSelectedOption(e.target.value)
+    }
+
+    const handleSubmit = () => {
+        onSubmit({name: selectedOption});
+        cabinet.name = selectedOption;
+        //handleClosePopup();
     }
 
     return (
@@ -41,7 +48,7 @@ const CabinetMenu = ({ setPopupVisible, cabinet  }) => {
                                     ))}
                                 </select>
                                 {selectedOption === "" ? <></> : (
-                                    <button>Submit</button>
+                                    <button onClick={handleSubmit}>Submit</button>
                                 )}
                                 
                             </div>
@@ -62,6 +69,7 @@ CabinetMenu.propTypes = {
         depth: PropTypes.number.isRequired,
         isBase: PropTypes.bool.isRequired,
     }).isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };
 
 export default CabinetMenu;

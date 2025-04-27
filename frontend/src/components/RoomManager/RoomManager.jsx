@@ -95,6 +95,10 @@ const RoomManager = () => {
                         <CabinetMenu
                             setPopupVisible={setMenuVisible}
                             cabinet={selectedCabinet}
+                            onSubmit={(updatedFields) => {
+                                console.log("New cabinet name:", updatedFields);
+                                setSelectedCabinet(prev => ({ ...prev, ...updatedFields }));
+                            }}
                         />
                     )}
                 </div>

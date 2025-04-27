@@ -1,5 +1,3 @@
-# This is a folder where we will put any logic needed for cabinets
-
 def place_cabinet_on_canvas(cabinet, x, y):
     """
     This function places a cabinet on a Konva canvas (usually a room)

@@ -20,9 +20,13 @@ const CabinetKey = () => {
       <p>
         <strong>Black</strong> boxes represent upper cabinets
       </p>
-      
+
       {/* Export button for exporting the design to a PDF */}
-      <ExportToPDF />
+      <div className="pdf-button">
+        <ExportToPDF />
+      </div>
+
+      <p className='bottom-text'>For any questions, comments, or bug reports, please reach out to <a href='mailto:help@cabinext.com'>help@cabinext.com</a></p>
     </div>
   );
 };

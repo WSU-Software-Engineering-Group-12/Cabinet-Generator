@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";  // Import PropTypes for type-checking the component's props
 import "./CabinetMenu.css";  // Import CSS styles specific to the CabinetMenu component
-import { defaultInchPx } from "../../../utils/globalVars";  // Import the default conversion value from pixels to inches
 
 /**
  * @summary CabinetMenu component that displays a popup with cabinet details.
@@ -26,8 +25,8 @@ const CabinetMenu = ({ setPopupVisible, cabinet }) => {
                     {/* Display the cabinet type (name) */}
                     <h2>Type: {cabinet.name}</h2>
                     
-                    {/* Display the dimensions of the cabinet, converted from pixels to inches */}
-                    <p>Dimensions: {cabinet.width / defaultInchPx}in x {cabinet.height / defaultInchPx}in</p>
+                    {/* Display the dimensions of the cabinet */}
+                    <p>Dimensions: {cabinet.width}in x {cabinet.depth}in x {cabinet.height}in</p>
 
                     {/* Flex container for the "Close" button */}
                     <div className="popup-flex">
